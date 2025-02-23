@@ -11,5 +11,9 @@ def index():
 def checkout():
     return render_template('checkout.html')
 
+@app.route('/ShopForCapstone')
+def Shop():
+    return render_template('ShopForCapstone.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
