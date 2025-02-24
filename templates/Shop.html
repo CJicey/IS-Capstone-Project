@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sale</title>
+    <title>Shop</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/general.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
 </head>
@@ -17,7 +17,7 @@
             <nav class="header-nav">
                 <a class="home-header" href="{{ url_for('index') }}">HOME</a>
                 <a class="shop-header" href="{{ url_for('Shop') }}">SHOP</a>
-                <a class="prebrew-header" href="{{ url_for('index') }}">PRE-BREWED</a>
+                <a class="prebrew-header" href="{{ url_for('prebrewed') }}">PRE-BREWED</a>
                 <a class="sale-header" href="{{ url_for('sale') }}">SALE</a>
                 <a class="aboutus-header" href="{{ url_for('about') }}">ABOUT US</a>
             </nav>
@@ -25,26 +25,33 @@
     </header>
     
     <main>
-        <section class="sale-items">
+        <h1>Shop</h1>
+        <div class="catalog">
             <div class="product">
                 <img src="{{ url_for('static', filename='images/product1.jpg') }}" alt="Product 1">
-                <h2>Product 1</h2>
-                <p class="price"><del>$50.00</del> $30.00</p>
+                <h3>Product 1</h3>
+                <p>$19.99</p>
                 <button>Add to Cart</button>
             </div>
             <div class="product">
                 <img src="{{ url_for('static', filename='images/product2.jpg') }}" alt="Product 2">
-                <h2>Product 2</h2>
-                <p class="price"><del>$80.00</del> $50.00</p>
+                <h3>Product 2</h3>
+                <p>$29.99</p>
                 <button>Add to Cart</button>
             </div>
             <div class="product">
                 <img src="{{ url_for('static', filename='images/product3.jpg') }}" alt="Product 3">
-                <h2>Product 3</h2>
-                <p class="price"><del>$120.00</del> $90.00</p>
+                <h3>Product 3</h3>
+                <p>$39.99</p>
                 <button>Add to Cart</button>
             </div>
-        </section>
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/product4.jpg') }}" alt="Product 4">
+                <h3>Product 4</h3>
+                <p>$39.99</p>
+                <button>Add to Cart</button>
+            </div>
+        </div>
     </main>
     
     <footer>

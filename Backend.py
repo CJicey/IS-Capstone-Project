@@ -16,9 +16,21 @@ def index():
 def checkout():
     return render_template('checkout.html')
 
-@app.route('/ShopForCapstone')
+@app.route('/prebrewed')
+def prebrewed():
+    return render_template('prebrewed.html')
+
+@app.route('/sale')
+def sale():
+    return render_template('sale.html')
+
+@app.route('/Shop')
 def Shop():
-    return render_template('ShopForCapstone.html')
+    return render_template('Shop.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
