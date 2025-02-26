@@ -1,0 +1,33 @@
+
+.index-grid{
+  display: flex;
+  position: fixed;
+
+ 
+  height: 
+}   
+ 
+.index-content{
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  width: 100;
+  flex-shrink: 0;
+ 
+}
+
+.index-content img{
+  display: flex;
+  width: 2000px;
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  width: 100;
+  flex-shrink: 0;
+ 
+}
+body{
+  background-color: aliceblue;
+  padding-top: 210px;
+
+}
