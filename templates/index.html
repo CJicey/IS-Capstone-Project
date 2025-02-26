@@ -1,37 +1,46 @@
 <!doctype html>
 <html lang="en-us">
-<head>
+  <head>
     <meta charset="utf-8">
     <title>Homepage</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/general.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
-</head>
-<body>
-    <!-- Header -->
-    <div class="header">
-        <div class="left-header">
-            <img class="company-logo" src="{{ url_for('static', filename='images/companyname.png') }}">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/indexheader.css">
+  </head>
+  <body>
+<!--Header-->
+    <header class="header"> 
+  <!--Left Header -->
+      <div class="left-header">
+        <img class="company-logo" src="/images/companyname.png">
+      </div>
+  <!--Middle Header-->
+      <div class="middle-header">
+        <nav class="header-nav">
+        <a class="home-header" href="index.html">HOME</a>
+        <a class="shop-header" href="index.html">SHOP</a>
+        <a class="prebrew-header" href="index.html">PRE-BREWED</a>
+        <a class="sale-header" href="index.html">SALE</a>
+        <a class="aboutus-header" href="index.html">ABOUT US</a>
+        </nav>
+      </div>
+  <!-- Right Header-->
+      <div class="right-header">
+        <div class="cart-container">
+          <button class="cart-button">
+          <img class="cart-icon" src="/images/shoppingbag.jpg" alt="">
+          <div class="tooltip">Bag</div>
+          <div class="cart-count">3</div>
+          </button>
         </div>
-        <div class="middle-header">
-            <nav class="header-nav">
-                <a class="home-header" href="{{ url_for('index') }}">HOME</a>
-                <a class="shop-header" href="{{ url_for('Shop') }}">SHOP</a>
-                <a class="prebrew-header" href="{{ url_for('index') }}">PRE-BREWED</a>
-                <a class="sale-header" href="{{ url_for('sale') }}">SALE</a>
-                <a class="aboutus-header" href="{{ url_for('about') }}">ABOUT US</a>
-            </nav>
+      </div>
+    </header>
+    <main>
+      <div class="index-grid">
+        <div class="index-content">
+          <img src="/images/homepagepic.png" alt="">
         </div>
-        <div class="right-header">
-            <button class="cart-button">
-                <img class="cart-icon" src="{{ url_for('static', filename='images/shoppingbag.jpg') }}" alt="">
-            </button>
-        </div>
-    </div>
-
-    <h2>Products</h2>  
-    <br>
-    <p><img src="{{ url_for('static', filename='images/whitetee.jpg') }}" width="75" height="125"></p>
-
-</body>
+      </div>
+    </main>
+  </body>
 </html>
 <!--<input class="search-bar" type="text" placeholder="Search">-->
