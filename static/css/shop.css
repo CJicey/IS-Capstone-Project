@@ -1,0 +1,46 @@
+.catalog{
+	margin-bottom: 1000px;
+	color: black;
+}
+
+.product-grid{
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	column-gap: 20px;
+	row-gap: 150px;
+}   
+
+.product{ 
+	object-fit: contain;
+	margin-top: 100px;
+	height: 100%;
+}
+
+.product img{
+	height: 400px;
+	margin-left: 77px; 
+}
+
+.product-info-grid{
+	color: black;
+	position: relative;
+}
+
+.product-title,
+.price-tag{
+	font-family: monospace;
+	font-size: xx-large;
+	font-weight: bold;
+	display: flex;
+	justify-content: center;
+}
+
+.add-to-button{
+	font-family: monospace;
+	font-size: x-large;
+	font-weight: bold;
+	position: absolute;
+	left: 212px;
+	border: solid;
+	border-width: 1px;
+}
