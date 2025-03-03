@@ -1,120 +1,70 @@
 <!DOCTYPE html>
 <html lang="en-US">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Warm Mug Coffee | Shop All</title>
-		<link rel="stylesheet" href="/css/shopgeneral.css">
-		<link rel="stylesheet" href="/css/shopheader.css">
-		<link rel="stylesheet" href="/css/shopsidebar.css">
-		<link rel="stylesheet" href="/css/shop.css"
-	</head>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warm Mug Coffee | Shop All</title>
+    <link rel="stylesheet" href="/css/shopgeneral.css">
+    <link rel="stylesheet" href="/css/shopheader.css">
+    <link rel="stylesheet" href="/css/shopsidebar.css">
+    <link rel="stylesheet" href="/css/shop.css">
+</head>
+<header class="header"> 
+    <!-- Left Header -->
+    <div class="left-header">
+        <img class="company-logo" src="{{ url_for('static', filename='images/companyname.png') }}">
+    </div>
+    
+    <!-- Middle Header -->
+    <div class="middle-header">
+        <nav class="header-nav">
+            <a class="home-header" href="{{ url_for('home') }}">HOME</a>
+            <a class="shop-header" href="{{ url_for('shop') }}">SHOP</a>
+            <a class="prebrew-header" href="{{ url_for('prebrewed') }}">PRE-BREWED</a>
+            <a class="sale-header" href="{{ url_for('sale') }}">SALE</a>
+            <a class="aboutus-header" href="{{ url_for('about_us') }}">ABOUT US</a>
+        </nav>
+    </div>
+    
+    <!-- Right Header -->
+    <div class="right-header">
+        <div class="cart-container">
+            <button class="cart-button">
+                <img class="cart-icon" src="{{ url_for('static', filename='images/shoppingbag.jpg') }}" alt="">
+                <div class="tooltip">Bag</div>
+                <div class="cart-count">{{ cart_count }}</div>
+            </button>
+        </div>
+    </div>
+</header>
 
-	<body>
-<!--Header-->
-		<header class="header"> 
-	<!--Left Header -->
-			<div class="left-header">
-			<img class="company-logo" src="/images/companyname.png">
-			</div>
-	<!--Middle Header-->
-			<div class="middle-header">
-				<nav class="header-nav">
-					<a class="home-header" href="index.html">HOME</a>
-					<a class="shop-header" href="index.html">SHOP</a>
-					<a class="prebrew-header" href="index.html">PRE-BREWED</a>
-					<a class="sale-header" href="index.html">SALE</a>
-					<a class="aboutus-header" href="index.html">ABOUT US</a>
-				</nav>
-			</div>
-	<!-- Right Header-->
-			<div class="right-header">
-				<div class="cart-container">
-					<button class="cart-button">
-						 <img class="cart-icon" src="/images/shoppingbag.jpg" alt="">
-						 <div class="tooltip">Bag</div>
-						 <div class="cart-count">3</div>
-					</button>
-				</div>
-			</div>
-		</header>
+<main>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-link">
+            <p>{{ category }}</p>
+        </div>
+    </div>
 
-		<main>
-	<!--Sidebar-->
-			<div class="sidebar">
-				<div class="sidebar-link">
-					<p>Coffee</p>
-				</div>
-				<div class="sidebar-link">
-					<p>Machines</p>
-				</div>
-				<div class="sidebar-link">
-					<p>Blends</p>
-				</div>
-				<div class="sidebar-link">
-					<p>Stickers</p>
-				</div>
-			</div>
+    <!-- Products -->
+    <div class="catalog">
+        <p>Shop All</p>
+        <div class="product-grid"> 
+            {% for product in products %}
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/' + product.image) }}" alt="{{ product.name }}">
+                <div class="product-info-grid">
+                    <p class="product-title">{{ product.name }}</p>
+                    <p class="price-tag">${{ product.price }}</p>
+                    <button class="add-to-button">Add to Cart</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div> 
+    </div>
+</main>
+<!-- Footer -->
+<footer>
+    <p>&copy; Copyright 2025</p>
+</footer>
 
-<!--Products-->
-			<div class="catalog">
-				<p>Shop All</p>
-				<div class="product-grid">
-					<div class="product">
-						<img src="/images/product1.png">
-						<div class="product-info-grid">
-							<p class="product-title">Product 2</p>
-							<p class="price-tag">$19.99</p>
-							<button class="add-to-button">Add to Cart</button>
-						</div>
-					</div>
-					<div class="product">
-						<img src="/images/product1.png">
-						<div class="product-info-grid">
-							<p class="product-title">Product 2</p>
-							<p class="price-tag">$19.99</p>
-							<button class="add-to-button">Add to Cart</button>
-						</div>
-					</div>
-					<div class="product">
-						<img src="/images/product1.png">
-						<div class="product-info-grid">
-							<p class="product-title">Product 2</p>
-							<p class="price-tag">$19.99</p>
-							<button class="add-to-button">Add to Cart</button>
-						</div>
-					</div>
-					<div class="product">
-						<img src="/images/product1.png">
-						<div class="product-info-grid">
-							<p class="product-title">Product 2</p>
-							<p class="price-tag">$19.99</p>
-							<button class="add-to-button">Add to Cart</button>
-						</div>
-					</div>
-					<div class="product">
-						<img src="/images/product1.png">
-						<div class="product-info-grid">
-							<p class="product-title">Product 2</p>
-							<p class="price-tag">$19.99</p>
-							<button class="add-to-button">Add to Cart</button>
-						</div>
-					</div>
-					<div class="product">
-						<img src="/images/product1.png">
-						<div class="product-info-grid">
-							<p class="product-title">Product 2</p>
-							<p class="price-tag">$19.99</p>
-							<button class="add-to-button">Add to Cart</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</main>
-<!--Footer-->
-		<footer>
-			<p>&copy; copyrigh 2025</p>
-		</footer>
-
-	</body>
-</html>
