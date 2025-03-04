@@ -11,18 +11,6 @@ def index():
 def home():
     return render_template('index.html')
 
-@app.route('/checkout')
-def checkout():
-    return render_template('checkout.html')
-
-@app.route('/prebrewed')
-def prebrewed():
-    return render_template("prebrewed")
-
-@app.route('/sale')
-def sale():
-    return render_template('sale.html')
-
 @app.route('/shop')
 def shop():
     # Dummy product data for testing (Replace with database query)
@@ -34,6 +22,14 @@ def shop():
     categories = ["Coffee", "Machines", "Accessories"]  # Dummy category data
     
     return render_template('shop.html', products=products, categories=categories, cart_count=3)
+
+@app.route('/sale')
+def sale():
+    return render_template('sale.html')
+
+@app.route('/checkout')
+def checkout():
+    return render_template('checkout.html')
 
 @app.route('/about-us')
 def about_us():

@@ -17,11 +17,11 @@
 		<!--Middle Header-->
 				<div class="middle-header">
 					<nav class="header-nav">
-					<a class="home-header" href="index.html">HOME</a>
-					<a class="shop-header" href="index.html">SHOP</a>
-					<a class="prebrew-header" href="index.html">PRE-BREWED</a>
-					<a class="sale-header" href="index.html">SALE</a>
-					<a class="aboutus-header" href="index.html">ABOUT US</a>
+						<a class="home-header" href="{{ url_for('home') }}">HOME</a>
+						<a class="shop-header" href="{{ url_for('shop') }}">SHOP</a>
+						<a class="sale-header" href="{{ url_for('sale') }}">SALE</a>
+						<a class="checkout-header" href="{{ url_for('checkout') }}">CHECKOUT</a>
+						<a class="aboutus-header" href="{{ url_for('about_us') }}">ABOUT US</a>
 					</nav>
 				</div>
 		<!-- Right Header-->
