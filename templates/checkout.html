@@ -1,82 +1,51 @@
 <!doctype html>
 <html lang="en-us">
-	<head>
+    <head>
         <meta charset="utf-8">
-		<title>Checkout</title>
-		<link rel="stylesheet" href="/css/checkout.css">
-		<link rel="stylesheet" href="/css/checkoutheader.css">
-	</head>
+        <title>Checkout</title>
+        <link rel="stylesheet" href="/css/checkout.css">
+        <link rel="stylesheet" href="/css/checkoutheader.css">
+    </head>
 
-		<body>
-	<!--Header-->
-			<header class="header"> 
-		<!--Left Header -->
-				<div class="left-header">
-					<img class="company-logo" src="/images/companyname.png">
-				</div>
-		<!--Middle Header-->
-				<div class="middle-header">
-					<nav class="header-nav">
-						<a class="home-header" href="{{ url_for('home') }}">HOME</a>
-						<a class="shop-header" href="{{ url_for('shop') }}">SHOP</a>
-						<a class="sale-header" href="{{ url_for('sale') }}">SALE</a>
-						<a class="checkout-header" href="{{ url_for('checkout') }}">CHECKOUT</a>
-						<a class="aboutus-header" href="{{ url_for('about_us') }}">ABOUT US</a>
-					</nav>
-				</div>
-		<!-- Right Header-->
-				<div class="right-header">
-					
-				</div>
-			</header>
-			
-			<main>
-				<form action="/action_page.php">
-					
-					<input class="name" type="text" 
-					placeholder="First Name"id="fname" name="fname">
+    <body>
+        <!-- Header -->
+        <header class="header"> 
+            <!-- Left Header -->
+            <div class="left-header">
+                <img class="company-logo" src="/images/companyname.png">
+            </div>
+            <!-- Middle Header -->
+            <div class="middle-header">
+                <nav class="header-nav">
+                    <a class="home-header" href="{{ url_for('home') }}">HOME</a>
+                    <a class="shop-header" href="{{ url_for('shop') }}">SHOP</a>
+                    <a class="sale-header" href="{{ url_for('sale') }}">SALE</a>
+                    <a class="checkout-header" href="{{ url_for('checkout') }}">CHECKOUT</a>
+                    <a class="aboutus-header" href="{{ url_for('about_us') }}">ABOUT US</a>
+                </nav>
+            </div>
+            <!-- Right Header -->
+            <div class="right-header"></div>
+        </header>
 
-					
-					<input class="name" type="text" 
-					placeholder="Last Name" id="lname" name="lname">
+        <main>
+            <form action="/action_page.php">
+                <input class="name" type="text" placeholder="First Name" id="fname" name="fname">
+                <input class="name" type="text" placeholder="Last Name" id="lname" name="lname">
+                <input class="address" type="text" placeholder="Address" id="address" name="address">
+                <input class="address" type="text" placeholder="Unit Number, Suite, Floor(Optional)" id="unit" name="unit">
+                <input class="misc-address" type="text" placeholder="City" id="city" name="city">
+                <input class="misc-address" type="text" placeholder="State" id="state" name="state"><br>
+                <input class="misc-address" type="text" placeholder="Zipcode" id="zipcode" name="zipcode">
+                <input class="misc-address" type="text" id="country" name="country" value="United States"><br><br><br>
+                <input class="creditcardnumber" type="text" placeholder="Credit Card Number" id="creditcard" name="creditcard">
+                <input class="cardinfo" type="text" placeholder="Expiration Date" id="expdate" name="expdate">
+                <input class="cardinfo" type="text" placeholder="CVV" id="CVV" name="CVV">
+                <button type="submit">Checkout Now</button>
+            </form>
+        </main>
 
-				
-					<input class="address" type="text" 
-					placeholder="Address" id="address" name="address">
+        <script src="/js/checkout.js"></script>
 
-
-					<input class="address" type="text" 
-					placeholder="Unit Number, Suite, Floor(Optional)" id="address" name="address">
-
-					<input class="misc-address" type="text" 
-					placeholder="City" id="city" name="city">
-
-					
-					<input class="misc-address" type="text" 
-					placeholder="State" id="state" name="state"><br>
-
-					
-					<input class="misc-address" type="text" 
-					placeholder="Zipcode" id="zipcode" name="zipcode">
-
-				
-					<input class="misc-address" type="text" id="country" 
-					name="country" value="United States"><br><br><br>
-
-				
-					<input class="creditcardnumber" type="text" 
-					placeholder="Credit Card Number" id="creditcard" name="creditcard">
-
-				
-					<input class="cardinfo" type="text" 
-					placeholder="Expiration Date" id="expdate" name="expdate">
-
-				
-					<input class="cardinfo" type="text" 
-					placeholder="CVV" id="CVV" name="CVV">
-
-					<button>Checkout Now</button>
-				</form>
-		</main>
-	</body>
+    </body>
 </html>
