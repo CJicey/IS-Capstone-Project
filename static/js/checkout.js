@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const checkoutForm = document.querySelector("form");
+    const checkoutForm = document.getElementById("checkout-form");
 
     checkoutForm.addEventListener("submit", async function (event) {
         event.preventDefault(); // Prevent default form submission
@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let apiEndpoint = "";
 
-        // Basic validation (Example: missing details)
         if (!creditCardNumber || !expDate || !cvv) {
             apiEndpoint = "https://e7642f03-e889-4c5c-8dc2-f1f52461a5ab.mock.pstmn.io/get?authorize=carddetails";
         } else if (creditCardNumber.startsWith("4")) { // Example: Visa cards succeed

@@ -3,18 +3,16 @@
     <head>
         <meta charset="utf-8">
         <title>Checkout</title>
-        <link rel="stylesheet" href="/css/checkout.css">
-        <link rel="stylesheet" href="/css/checkoutheader.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/checkoutheader.css') }}">
     </head>
 
     <body>
         <!-- Header -->
         <header class="header"> 
-            <!-- Left Header -->
             <div class="left-header">
-                <img class="company-logo" src="/images/companyname.png">
+                <img class="company-logo" src="{{ url_for('static', filename='images/companyname.png') }}">
             </div>
-            <!-- Middle Header -->
             <div class="middle-header">
                 <nav class="header-nav">
                     <a class="home-header" href="{{ url_for('home') }}">HOME</a>
@@ -24,16 +22,15 @@
                     <a class="aboutus-header" href="{{ url_for('about_us') }}">ABOUT US</a>
                 </nav>
             </div>
-            <!-- Right Header -->
             <div class="right-header"></div>
         </header>
 
         <main>
-            <form action="/action_page.php">
+            <form id="checkout-form">
                 <input class="name" type="text" placeholder="First Name" id="fname" name="fname">
                 <input class="name" type="text" placeholder="Last Name" id="lname" name="lname">
                 <input class="address" type="text" placeholder="Address" id="address" name="address">
-                <input class="address" type="text" placeholder="Unit Number, Suite, Floor(Optional)" id="unit" name="unit">
+                <input class="address" type="text" placeholder="Unit Number, Suite, Floor (Optional)" id="unit" name="unit">
                 <input class="misc-address" type="text" placeholder="City" id="city" name="city">
                 <input class="misc-address" type="text" placeholder="State" id="state" name="state"><br>
                 <input class="misc-address" type="text" placeholder="Zipcode" id="zipcode" name="zipcode">
@@ -45,7 +42,7 @@
             </form>
         </main>
 
-        <script src="/js/checkout.js"></script>
+        <script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
 
     </body>
 </html>
