@@ -12,15 +12,7 @@ def home():
 
 @app.route('/shop')
 def shop():
-    # Dummy product data for testing (Replace with database query)
-    products = [
-        {"name": "Coffee Beans", "image": "coffee.jpg", "price": 12.99},
-        {"name": "Espresso Machine", "image": "espresso.jpg", "price": 299.99}
-    ]
-    
-    categories = ["Coffee", "Machines", "Accessories"]  # Dummy category data
-    
-    return render_template('shop.html', products=products, categories=categories, cart_count=3)
+    return render_template('shop.html')
 
 @app.route('/sale')
 def sale():

@@ -4,15 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Warm Mug Coffee | Shop All</title>
-    <link rel="stylesheet" href="/css/shopgeneral.css">
-    <link rel="stylesheet" href="/css/shopheader.css">
-    <link rel="stylesheet" href="/css/shopsidebar.css">
-    <link rel="stylesheet" href="/css/shop.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/shopgeneral.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/shopheader.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/shopsidebar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/shop.css') }}">
 </head>
+<body>
 <header class="header"> 
     <!-- Left Header -->
     <div class="left-header">
-        <img class="company-logo" src="{{ url_for('static', filename='images/companyname.png') }}">
+        <img class="company-logo" src="{{ url_for('static', filename='images/companyname.png') }}" alt="Company Logo">
     </div>
     
     <!-- Middle Header -->
@@ -30,7 +31,7 @@
     <div class="right-header">
         <div class="cart-container">
             <button class="cart-button">
-                <img class="cart-icon" src="{{ url_for('static', filename='images/shoppingbag.jpg') }}" alt="">
+                <img class="cart-icon" src="{{ url_for('static', filename='images/shoppingbag.jpg') }}" alt="Shopping Bag">
                 <div class="tooltip">Bag</div>
                 <div class="cart-count">{{ cart_count }}</div>
             </button>
@@ -63,8 +64,11 @@
         </div> 
     </div>
 </main>
+
 <!-- Footer -->
 <footer>
-    <p>&copy; Copyright 2025</p>
+    <p>&copy; Copyright 2025 Warm Mug Coffee</p>
 </footer>
 
+</body>
+</html>
