@@ -2,32 +2,35 @@ document.addEventListener("DOMContentLoaded", function () {
     const checkoutForm = document.getElementById("checkout-form");
 
     checkoutForm.addEventListener("submit", async function (event) {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault(); 
 
-        const creditCardNumber = document.getElementById("creditcard").value;
-        const expDate = document.getElementById("expdate").value;
-        const cvv = document.getElementById("CVV").value;
-
-        let apiEndpoint = "";
-
-        if (!creditCardNumber || !expDate || !cvv) {
-            apiEndpoint = "https://e7642f03-e889-4c5c-8dc2-f1f52461a5ab.mock.pstmn.io/get?authorize=carddetails";
-        } else if (creditCardNumber.startsWith("4")) { // Example: Visa cards succeed
-            apiEndpoint = "https://e7642f03-e889-4c5c-8dc2-f1f52461a5ab.mock.pstmn.io/get?authorize=success";
-        } else {
-            apiEndpoint = "https://e7642f03-e889-4c5c-8dc2-f1f52461a5ab.mock.pstmn.io/get?authorize=insufficient";
-        }
+        const formData = {
+            fname: document.getElementById("fname").value,
+            lname: document.getElementById("lname").value,
+            address: document.getElementById("address").value,
+            city: document.getElementById("city").value,
+            state: document.getElementById("state").value,
+            zipcode: document.getElementById("zipcode").value,
+            creditcard: document.getElementById("creditcard").value,
+            expdate: document.getElementById("expdate").value,
+            CVV: document.getElementById("CVV").value
+        };
 
         try {
-            const response = await fetch(apiEndpoint);
+            const response = await fetch("/process_payment", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            });
+
             const data = await response.json();
 
             if (data.status === "success") {
                 alert("Transaction Approved! Thank you for your purchase.");
-            } else if (data.status === "insufficient") {
-                alert("Transaction Failed: Insufficient Funds.");
             } else {
-                alert("Transaction Failed: Incorrect or Missing Card Details.");
+                alert("Transaction Failed. Please check your details.");
             }
         } catch (error) {
             console.error("Error processing transaction:", error);
