@@ -1,144 +1,178 @@
 <!doctype html>
 <html lang="en-us">
-    <head>
-        <meta charset="utf-8">
-        <title>Checkout</title>
-        <link rel="stylesheet" href="/css/general.css">
-        <link rel="stylesheet" href="/css/header.css">
-        <link rel="stylesheet" href="static/css/eccomerce.css">
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                background-color: #F4ECE1; /* Creamy beige */
-                color: #3E2F1B; /* Rich brown */
-            }
-            .header {
-                background-color: #534545; /* Earthy green */
-                color: white;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 15px 30px;
-            }
-            .company-logo {
-                width: 100px; /* Small logo size */
-                height: auto;
-            }
-            .header-nav a {
-                color: white;
-                text-decoration: none;
-                margin: 0 15px;
-                font-weight: bold;
-            }
-            .hero {
-                text-align: center;
-                background: url('hero-image.jpg') no-repeat center center/cover;
-                color: rgb(186, 160, 160);
-                padding: 80px 20px;
-            }
-            .hero h1 {
-                font-size: 3em;
-            }
-            .button {
-                background-color: #A68A64; /* Muted golden yellow */
-                color: white;
-                padding: 15px 30px;
-                border: none;
-                cursor: pointer;
-                font-size: 1.2em;
-                margin-top: 20px;
-            }
-            .products {
-                display: flex;
-                justify-content: center;
-                flex-wrap: wrap;
-                padding: 20px;
-            }
-            .product {
-                background: #E6E4D9; /* Soft greenish beige */
-                padding: 20px;
-                margin: 15px;
-                border-radius: 8px;
-                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                text-align: center;
-            }
-            .product img {
-                width: 300px; /* Set uniform width */
-                height: 300px; /* Set uniform height */
-                object-fit: cover; /* Ensure images are well-fitted */
-                border-radius: 5px;
-            }
-            .footer {
-                background-color: #534545; /* Earthy green */
-                color: white;
-                text-align: center;
-                padding: 15px;
-                margin-top: 20px;
-            }
-            .right-header {
-                position: relative;
-            }
+<head>
+    <meta charset="utf-8">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/eccomerce.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #F4ECE1; /* Creamy beige */
+            color: #3E2F1B; /* Rich brown */
+            line-height: 1.6;
+        }
+        .header {
+            background-color: #534545; /* Earthy green */
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+        }
+        .company-logo {
+            width: 120px;
+            height: auto;
+        }
+        .header-nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: bold;
+        }
+        .hero {
+            text-align: center;
+            background: url('{{ url_for("static", filename="images/hero-image.jpg") }}') no-repeat center center/cover;
+            color: rgb(186, 160, 160);
+            padding: 100px 20px;
+            margin-bottom: 40px;
+        }
+        .hero h1 {
+            font-size: 3.5em;
+        }
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0;
+            border: 2px solid #A68A64;
+            border-radius: 5px;
+            background-color: #fff;
+            font-size: 1em;
+        }
+        .form-group input[type="text"]:focus {
+            border-color: #534545;
+            outline: none;
+        }
+        .button {
+            background-color: #A68A64;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2em;
+            margin-top: 20px;
+            width: 100%;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #534545;
+        }
+        .footer {
+            background-color: #534545;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        .right-header {
+            position: relative;
+        }
+        .cart-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .cart-icon {
+            height: 30px;
+            width: 30px;
+        }
+    </style>
+</head>
 
-            .cart-button {
-                background: none;
-                border: none;
-                cursor: pointer;
-            }
+<body>
+    <!-- Header -->
+    <header class="header"> 
+        <div class="left-header">
+            <img class="company-logo" src="{{ url_for('static', filename='images/Beans.png') }}" alt="Company Logo">
+        </div>
+        <div class="middle-header">
+            <nav class="header-nav">
+                <a href="{{ url_for('index') }}">HOME</a>
+                <a href="{{ url_for('checkout') }}">CHECKOUT</a>
+                <a href="{{ url_for('sale') }}">SALE</a>
+                <a href="{{ url_for('about_us') }}">ABOUT US</a>
+            </nav>
+        </div>
+        <div class="right-header">
+            <button class="cart-button">
+                <img class="cart-icon" src="{{ url_for('static', filename='images/bag.png') }}" alt="Cart">
+            </button>
+        </div>
+    </header>
 
-            .cart-icon {
-                height: 30px;
-                width: 30px;
-                position: absolute;
-                top: 10px;
-                right: 10px;
-        </style>
-    </head>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Checkout</h1>
+        <p>Complete your purchase by filling out the form below.</p>
+    </section>
 
-    <body>
-        <!-- Header -->
-        <header class="header"> 
-            <div class="left-header">
-                <img class="company-logo" src="statioc/images/Beans.png" alt="Company Logo">
-            </div>
-            <div class="middle-header">
-                <nav class="header-nav">
-                    <a class="home-header" href="index.html">HOME</a>
-                    <a class="shop-header" href="shop.html">SHOP</a>
-                    <a class="sale-header" href="sale.html">SALE</a>
-                    <a class="checkout-header" href="checkout.html">CHECKOUT</a>
-                    <a class="aboutus-header" href="about.html">ABOUT US</a>
-                </nav>
-            </div>
-            <div class="right-header">
-                <button class="cart-button"> <img class="cart-icon" src="static/images/bag.png" alt="Cart"></button>
-            </div>
-        </header>
-
-        <main>
-            <form id="checkout-form">
+    <!-- Main Content -->
+    <main class="main-content">
+        <form id="checkout-form" method="POST" action="{{ url_for('process_payment') }}">
+            <div class="form-group">
                 <input class="name" type="text" placeholder="First Name" id="fname" name="fname" required>
+            </div>
+            <div class="form-group">
                 <input class="name" type="text" placeholder="Last Name" id="lname" name="lname" required>
+            </div>
+            <div class="form-group">
                 <input class="address" type="text" placeholder="Address" id="address" name="address" required>
+            </div>
+            <div class="form-group">
                 <input class="address" type="text" placeholder="Unit Number, Suite, Floor (Optional)" id="unit" name="unit">
+            </div>
+            <div class="form-group">
                 <input class="misc-address" type="text" placeholder="City" id="city" name="city" required>
+            </div>
+            <div class="form-group">
                 <input class="misc-address" type="text" placeholder="State" id="state" name="state" required>
+            </div>
+            <div class="form-group">
                 <input class="misc-address" type="text" placeholder="Zipcode" id="zipcode" name="zipcode" required>
+            </div>
+            <div class="form-group">
                 <input class="misc-address" type="text" id="country" name="country" value="United States" readonly>
-                <br><br>
+            </div>
+            <br><br>
+            <div class="form-group">
                 <input class="creditcardnumber" type="text" placeholder="Credit Card Number" id="creditcard" name="creditcard" required>
+            </div>
+            <div class="form-group">
                 <input class="cardinfo" type="text" placeholder="Expiration Date (MM/YY)" id="expdate" name="expdate" required>
+            </div>
+            <div class="form-group">
                 <input class="cardinfo" type="text" placeholder="CVV" id="CVV" name="CVV" required>
-                <button type="submit">Checkout Now</button>
-            </form>
-        </main>
+            </div>
+            <button type="submit" class="button">Checkout Now</button>
+        </form>
+    </main>
 
-        <footer class="footer">
-            <p>&copy; 2025 Your Company Name. All Rights Reserved.</p>
-        </footer>
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Your Company Name. All Rights Reserved.</p>
+    </footer>
 
-        <script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
-
-    </body>
+    <script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
+</body>
 </html>

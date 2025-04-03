@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="static/css/eccomerce.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/eccomerce.css') }}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -34,7 +34,7 @@
         }
         .hero {
             text-align: center;
-            background: url('hero-image.jpg') no-repeat center center/cover;
+            background: url('{{ url_for("static", filename="images/hero-image.jpg") }}') no-repeat center center/cover;
             color: rgb(186, 160, 160);
             padding: 80px 20px;
         }
@@ -50,26 +50,6 @@
             font-size: 1.2em;
             margin-top: 20px;
         }
-        .products {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            padding: 20px;
-        }
-        .product {
-            background: #E6E4D9; /* Soft greenish beige */
-            padding: 20px;
-            margin: 15px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .product img {
-            width: 300px; /* Set uniform width */
-            height: 300px; /* Set uniform height */
-            object-fit: cover; /* Ensure images are well-fitted */
-            border-radius: 5px;
-        }
         .footer {
             background-color: #534545; /* Earthy green */
             color: white;
@@ -77,21 +57,32 @@
             padding: 15px;
             margin-top: 20px;
         }
+        .about-content {
+            padding: 20px;
+            text-align: center;
+        }
+        .about-content h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .about-content p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header class="header">
         <div class="left-header">
-            <img class="company-logo" src="static/images/Beans.png" alt="Company Logo">
+            <img class="company-logo" src="{{ url_for('static', filename='images/Beans.png') }}" alt="Company Logo">
         </div>
         <div class="middle-header">
             <nav class="header-nav">
-                <a class="home-header" href="templates/index.html">HOME</a>
-                <a class="shop-header" href="templates/shop.html">SHOP</a>
-                <a class="checkout-header" href="templates/checkout.html">CHECKOUT</a>
-                <a class="sale-header" href="templates/sale.html">SALE</a>
-                <a class="aboutus-header" href="templates/about.html">ABOUT US</a>
+                <a href="{{ url_for('index') }}">HOME</a>
+                <a href="{{ url_for('checkout') }}">CHECKOUT</a>
+                <a href="{{ url_for('sale') }}">SALE</a>
+                <a href="{{ url_for('about_us') }}">ABOUT US</a>
             </nav>
         </div>
     </header>
@@ -106,7 +97,7 @@
         </section>
     </main>
     
-    <footer>
+    <footer class="footer">
         <p>&copy; 2025 Company Name. All rights reserved.</p>
     </footer>
 </body>
