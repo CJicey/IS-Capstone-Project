@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template
 from flask_pymongo import PyMongo
 from flask_cors import CORS
 import requests
+import re
 
 app = Flask(__name__)
 CORS(app)
@@ -23,6 +24,24 @@ API_ENDPOINTS = {
     "insufficient": "https://e7642f03-e889-4c5c-8dc2-f1f52461a5ab.mock.pstmn.io/get?authorize=insufficient",
     "carddetails": "https://e7642f03-e889-4c5c-8dc2-f1f52461a5ab.mock.pstmn.io/get?authorize=carddetails"
 }
+
+def mask_card_number(card_number):
+    """Masks all but the last four digits of a credit card number."""
+    return "*" * (len(card_number) - 4) + card_number[-4:]
+
+def get_card_type(card_number):
+    """Determines the credit card type based on the first few digits."""
+    card_patterns = {
+        "Visa": r"^4[0-9]{12}(?:[0-9]{3})?$",
+        "MasterCard": r"^5[1-5][0-9]{14}$",
+        "American Express": r"^3[47][0-9]{13}$",
+        "Discover": r"^6(?:011|5[0-9]{2})[0-9]{12}$"
+    }
+    
+    for card_type, pattern in card_patterns.items():
+        if re.match(pattern, card_number):
+            return card_type
+    return "Unknown"
 
 @app.route('/')
 def index():
@@ -58,6 +77,12 @@ def process_payment():
         if not all([first_name, last_name, credit_card, exp_date, cvv]):
             return jsonify({"error": "Missing required fields"}), 400
 
+        # Mask credit card number
+        masked_card = mask_card_number(credit_card)
+
+        # Get credit card type
+        card_type = get_card_type(credit_card)
+
         # Select API URL based on card number (mock validation)
         if credit_card.startswith("4"):
             api_url = API_ENDPOINTS["success"]
@@ -72,18 +97,30 @@ def process_payment():
         api_response = response.json()
         transaction_status = api_response.get("status")
 
-        # Store only essential details in MongoDB (No Credit Card Info)
+        # Store essential details in MongoDB (No full Credit Card Info)
         order_data = {
             "fname": first_name,
             "lname": last_name,
+            "card_type": card_type,
+            "masked_card": masked_card,
             "status": transaction_status
         }
         mongo.db.orders.insert_one(order_data)
 
         if transaction_status == "success":
-            return jsonify({"status": "success", "message": "Transaction Approved!"}), 200
+            return jsonify({
+                "status": "success",
+                "message": "Transaction Approved!",
+                "card_type": card_type,
+                "masked_card": masked_card
+            }), 200
         else:
-            return jsonify({"status": "failed", "message": "Transaction Failed"}), 400
+            return jsonify({
+                "status": "failed",
+                "message": "Transaction Failed",
+                "card_type": card_type,
+                "masked_card": masked_card
+            }), 400
 
     except requests.exceptions.RequestException as e:
         print("❌ API request failed:", e)
