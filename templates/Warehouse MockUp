@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Beans and Things </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5dc;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #6f4e37;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #6f4e37;
+            border-radius: 5px;
+            background: #fff8e1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Our Coffee Warehouse</h1>
+        
+        <div class="section">
+            <h2>Inventory</h2>
+            <ul>
+                <li> Product 1 - 5000 kg</li>
+                <li> Product 2 - 3000 kg</li>
+                <li> Product 3 - 2000 kg</li>
+                <li> Product 4 - 1000 kg</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>Storage Areas</h2>
+            <p>Our warehouse is divided into three main sections:</p>
+            <ul>
+                <li>Green Coffee Storage</li>
+                <li>Roasted Coffee Storage</li>
+                <li>Packaging & Distribution</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>Order Processing</h2>
+            <p>All orders are processed within 24 hours. Customers can track their shipments through our online portal.</p>
+        </div>
+    </div>
+</body>
+</html>
