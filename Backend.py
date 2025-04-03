@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, url_for
+from flask import Flask, request, jsonify, render_template
 from flask_pymongo import PyMongo
 from flask_cors import CORS
 import requests
@@ -6,14 +6,18 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-# MongoDB connection
+# Secure MongoDB Connection
 app.config["MONGO_URI"] = "mongodb+srv://CJicey:Baller10@cluster0.3dkrku9.mongodb.net/your_database_name"
 mongo = PyMongo(app)
 
-if mongo.db is None:
-    print("❌ ERROR: MongoDB connection failed. Ensure MongoDB is running.")
+# Verify MongoDB Connection
+try:
+    mongo.db.orders.find_one()
+    print("✅ MongoDB connected successfully!")
+except Exception as e:
+    print(f"❌ ERROR: MongoDB connection failed - {e}")
 
-# Mock API endpoints for transactions
+# Mock API endpoints
 API_ENDPOINTS = {
     "success": "https://e7642f03-e889-4c5c-8dc2-f1f52461a5ab.mock.pstmn.io/get?authorize=success",
     "insufficient": "https://e7642f03-e889-4c5c-8dc2-f1f52461a5ab.mock.pstmn.io/get?authorize=insufficient",
@@ -38,47 +42,55 @@ def about_us():
 
 @app.route('/process_payment', methods=['POST'])
 def process_payment():
-    data = request.json
-    if not data:
-        return jsonify({"error": "Invalid data"}), 400
-
-    credit_card = data.get("creditcard")
-    exp_date = data.get("expdate")
-    cvv = data.get("CVV")
-
-    # Determine the correct API URL
-    if not credit_card or not exp_date or not cvv:
-        api_url = API_ENDPOINTS["carddetails"]
-    elif credit_card.startswith("4"):
-        api_url = API_ENDPOINTS["success"]
-    else:
-        api_url = API_ENDPOINTS["insufficient"]
-
     try:
-        response = requests.get(api_url)
-        api_response = response.json()
+        data = request.json
+        if not data:
+            return jsonify({"error": "Invalid request, missing data"}), 400
 
-        # Save transaction to MongoDB
+        # Retrieve form data
+        first_name = data.get("fname")
+        last_name = data.get("lname")
+        credit_card = data.get("creditcard")
+        exp_date = data.get("expdate")
+        cvv = data.get("CVV")
+
+        # Validate input
+        if not all([first_name, last_name, credit_card, exp_date, cvv]):
+            return jsonify({"error": "Missing required fields"}), 400
+
+        # Select API URL based on card number (mock validation)
+        if credit_card.startswith("4"):
+            api_url = API_ENDPOINTS["success"]
+        else:
+            api_url = API_ENDPOINTS["insufficient"]
+
+        # Call mock payment API
+        response = requests.get(api_url)
+        if response.status_code != 200:
+            return jsonify({"error": "Payment gateway error"}), 500
+
+        api_response = response.json()
+        transaction_status = api_response.get("status")
+
+        # Store only essential details in MongoDB (No Credit Card Info)
         order_data = {
-            "fname": data.get("fname"),
-            "lname": data.get("lname"),
-            "creditcard": credit_card,
-            "expdate": exp_date,
-            "cvv": cvv,
-            "status": api_response.get("status")
+            "fname": first_name,
+            "lname": last_name,
+            "status": transaction_status
         }
         mongo.db.orders.insert_one(order_data)
 
-        if api_response.get("status") == "success":
+        if transaction_status == "success":
             return jsonify({"status": "success", "message": "Transaction Approved!"}), 200
-        elif api_response.get("status") == "insufficient":
-            return jsonify({"status": "failed", "message": "Transaction Failed: Insufficient Funds"}), 400
         else:
-            return jsonify({"status": "failed", "message": "Transaction Failed: Incorrect or Missing Card Details"}), 400
+            return jsonify({"status": "failed", "message": "Transaction Failed"}), 400
 
+    except requests.exceptions.RequestException as e:
+        print("❌ API request failed:", e)
+        return jsonify({"error": "Payment processing error"}), 500
     except Exception as e:
-        print("Error processing transaction:", e)
-        return jsonify({"error": "Transaction failed"}), 500
+        print("❌ Server error:", e)
+        return jsonify({"error": "Internal server error"}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
