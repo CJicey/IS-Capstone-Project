@@ -2,9 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const checkoutForm = document.getElementById("checkout-form");
     const checkoutButton = document.querySelector(".button");
     const creditCardInput = document.getElementById("creditcard");
-    const cardTypeDisplay = document.getElementById("card-type"); // Assuming an element exists to display card type
+    const cardTypeDisplay = document.getElementById("card-type"); 
 
-    // Function to detect card type
     function detectCardType(number) {
         const cardPatterns = {
             visa: /^4[0-9]{12}(?:[0-9]{3})?$/,
@@ -15,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         for (const [type, pattern] of Object.entries(cardPatterns)) {
             if (pattern.test(number)) {
-                return type.charAt(0).toUpperCase() + type.slice(1); // Capitalize first letter
+                return type.charAt(0).toUpperCase() + type.slice(1); 
             }
         }
         return "Unknown";
@@ -70,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 checkoutForm.reset(); // Clear form
                 cardTypeDisplay.textContent = ""; // Clear detected card type
             } else {
-                alert("❌ Transaction Failed: " + (data.message || "Please check your details."));
+                alert("❌ Transaction Failed: Insufficient Funds.");
             }
         } catch (error) {
             console.error("⚠️ Error processing transaction:", error);

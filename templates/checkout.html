@@ -132,7 +132,7 @@
     </section>
 
     <main class="main-content">
-        <form id="checkout-form" method="POST" action="{{ url_for('process_payment') }}">
+        <form id="checkout-form">
             <div class="form-group">
                 <input class="name" type="text" placeholder="First Name" id="fname" name="fname" required>
             </div>
@@ -174,5 +174,6 @@
     </footer>
 
     <script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
+    
 </body>
 </html>
