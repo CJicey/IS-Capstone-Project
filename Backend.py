@@ -7,11 +7,9 @@ import re
 app = Flask(__name__)
 CORS(app)
 
-# Secure MongoDB Connection
 app.config["MONGO_URI"] = "mongodb+srv://CJicey:Baller10@cluster0.3dkrku9.mongodb.net/your_database_name"
 mongo = PyMongo(app)
 
-# Verify MongoDB Connection
 try:
     mongo.db.orders.find_one()
     print("✅ MongoDB connected successfully!")
@@ -66,30 +64,25 @@ def process_payment():
         if not data:
             return jsonify({"error": "Invalid request, missing data"}), 400
 
-        # Retrieve form data
         first_name = data.get("fname")
         last_name = data.get("lname")
         credit_card = data.get("creditcard")
         exp_date = data.get("expdate")
         cvv = data.get("CVV")
 
-        # Validate input
         if not all([first_name, last_name, credit_card, exp_date, cvv]):
             return jsonify({"error": "Missing required fields"}), 400
 
         # Mask credit card number
         masked_card = mask_card_number(credit_card)
 
-        # Get credit card type
         card_type = get_card_type(credit_card)
 
-        # Select API URL based on card number (mock validation)
         if credit_card.startswith("4"):
             api_url = API_ENDPOINTS["success"]
         else:
             api_url = API_ENDPOINTS["insufficient"]
 
-        # Call mock payment API
         response = requests.get(api_url)
         if response.status_code != 200:
             return jsonify({"error": "Payment gateway error"}), 500
@@ -97,7 +90,6 @@ def process_payment():
         api_response = response.json()
         transaction_status = api_response.get("status")
 
-        # Store essential details in MongoDB (No full Credit Card Info)
         order_data = {
             "fname": first_name,
             "lname": last_name,

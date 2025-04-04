@@ -20,16 +20,15 @@ document.addEventListener("DOMContentLoaded", function () {
         return "Unknown";
     }
 
-    // Event listener for credit card input
     creditCardInput.addEventListener("input", function () {
-        const cardType = detectCardType(creditCardInput.value.replace(/\s/g, "")); // Remove spaces
-        cardTypeDisplay.textContent = cardType !== "Unknown" ? `Card Type: ${cardType}` : ""; // Update UI
+        const cardType = detectCardType(creditCardInput.value.replace(/\s/g, "")); 
+        cardTypeDisplay.textContent = cardType !== "Unknown" ? `Card Type: ${cardType}` : ""; 
     });
 
     checkoutForm.addEventListener("submit", async function (event) {
         event.preventDefault();
 
-        // Disable button to prevent multiple clicks
+        
         checkoutButton.disabled = true;
         checkoutButton.textContent = "Processing...";
 
@@ -66,8 +65,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (data.status === "success") {
                 alert("✅ Transaction Approved! Thank you for your purchase.");
-                checkoutForm.reset(); // Clear form
-                cardTypeDisplay.textContent = ""; // Clear detected card type
+                checkoutForm.reset(); 
+                cardTypeDisplay.textContent = ""; 
             } else {
                 alert("❌ Transaction Failed: Insufficient Funds.");
             }
@@ -75,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("⚠️ Error processing transaction:", error);
             alert("An error occurred while processing your payment. Please try again.");
         } finally {
-            // Re-enable button after processing
+            
             checkoutButton.disabled = false;
             checkoutButton.textContent = "Checkout Now";
         }
