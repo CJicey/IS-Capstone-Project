@@ -64,10 +64,12 @@ document.addEventListener("DOMContentLoaded", function () {
             const data = await response.json();
 
             if (data.status === "success") {
+                alert(data.status)
                 alert("✅ Transaction Approved! Thank you for your purchase.");
                 checkoutForm.reset(); 
                 cardTypeDisplay.textContent = ""; 
             } else {
+                alert(data.status)
                 alert("❌ Transaction Failed: Insufficient Funds.");
             }
         } catch (error) {

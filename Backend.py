@@ -108,7 +108,7 @@ def process_payment():
             }), 200
         else:
             return jsonify({
-                "status": "failed",
+                "status": "insufficient",
                 "message": "Transaction Failed",
                 "card_type": card_type,
                 "masked_card": masked_card
