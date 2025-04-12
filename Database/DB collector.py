@@ -11,4 +11,5 @@ mongo = PyMongo(app)
 orders = mongo.db.orders.find()
 
 for order in orders:
-    print(order) 
+    print(order)
+    print()
