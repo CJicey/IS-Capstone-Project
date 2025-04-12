@@ -115,7 +115,7 @@ def process_payment():
     except Exception as e:
         print("❌ Server error:", e)
         return jsonify({"error": "Internal server error"}), 500
-    
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -127,6 +127,12 @@ def checkout():
 @app.route('/sale')
 def sale():
     return render_template('sale.html')
+
+@app.route('/warehouse')
+def warehouse():
+    # Get all orders
+    orders = list(mongo.db.orders.find()) 
+    return render_template('warehouse.html', orders=orders)
 
 @app.route('/about')
 def about_us():
