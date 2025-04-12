@@ -130,7 +130,6 @@ def sale():
 
 @app.route('/warehouse')
 def warehouse():
-    # Get all orders
     orders = list(mongo.db.orders.find()) 
     return render_template('warehouse.html', orders=orders)
 
