@@ -41,22 +41,6 @@ def get_card_type(card_number):
             return card_type
     return "Unknown"
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/checkout')
-def checkout():
-    return render_template('checkout.html')
-
-@app.route('/sale')
-def sale():
-    return render_template('sale.html')
-
-@app.route('/about')
-def about_us():
-    return render_template('about.html')
-
 @app.route('/process_payment', methods=['POST'])
 def process_payment():
     try:
@@ -75,41 +59,52 @@ def process_payment():
 
         # Mask credit card number
         masked_card = mask_card_number(credit_card)
-
         card_type = get_card_type(credit_card)
 
+        # Decide which API to call based on card number
         if credit_card.startswith("4"):
             api_url = API_ENDPOINTS["success"]
-        else:
+        elif credit_card.startswith("5"):
             api_url = API_ENDPOINTS["insufficient"]
+        else:
+            api_url = API_ENDPOINTS["carddetails"]
 
         response = requests.get(api_url)
         if response.status_code != 200:
             return jsonify({"error": "Payment gateway error"}), 500
 
         api_response = response.json()
-        transaction_status = api_response.get("status")
+        success = api_response.get("Success", False)
+        reason = api_response.get("Reason", "Unknown error")
+        auth_token = api_response.get("AuthorizationToken")
+        authorized_amount = api_response.get("AuthorizedAmount", 0.0)
 
+        # Save order data to MongoDB
         order_data = {
             "fname": first_name,
             "lname": last_name,
             "card_type": card_type,
             "masked_card": masked_card,
-            "status": transaction_status
+            "success": success,
+            "reason": reason,
+            "authorized_amount": authorized_amount,
+            "authorization_token": auth_token
         }
         mongo.db.orders.insert_one(order_data)
 
-        if transaction_status == "success":
+        if success:
             return jsonify({
                 "status": "success",
                 "message": "Transaction Approved!",
                 "card_type": card_type,
-                "masked_card": masked_card
+                "masked_card": masked_card,
+                "auth_token": auth_token,
+                "amount": authorized_amount
             }), 200
         else:
             return jsonify({
-                "status": "insufficient",
-                "message": "Transaction Failed",
+                "status": "failed",
+                "message": reason,
                 "card_type": card_type,
                 "masked_card": masked_card
             }), 400
@@ -120,6 +115,22 @@ def process_payment():
     except Exception as e:
         print("❌ Server error:", e)
         return jsonify({"error": "Internal server error"}), 500
+    
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/checkout')
+def checkout():
+    return render_template('checkout.html')
+
+@app.route('/sale')
+def sale():
+    return render_template('sale.html')
+
+@app.route('/about')
+def about_us():
+    return render_template('about.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
