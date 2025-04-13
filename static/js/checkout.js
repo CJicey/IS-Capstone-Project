@@ -134,26 +134,4 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Failed to settle the order. Please try again.");
         }
     };
-
-    // Manual settlement form submission
-    const settleForm = document.getElementById("settle-form");
-    if (settleForm) {
-        settleForm.addEventListener("submit", async function (e) {
-            e.preventDefault();
-            const orderId = document.getElementById("settleOrderId").value.trim();
-            const finalAmount = parseFloat(document.getElementById("finalAmount").value);
-
-            try {
-                const res = await fetch("/settle_order", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ order_id: orderId, final_amount: finalAmount })
-                });
-                const result = await res.json();
-                document.getElementById("settleResult").textContent = result.message;
-            } catch (err) {
-                document.getElementById("settleResult").textContent = "An error occurred. Please try again.";
-            }
-        });
-    }
-});
+};
