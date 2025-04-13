@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const cardTypeDisplay = document.getElementById("card-type");
     const checkoutButton = document.querySelector(".button");
 
-    // Detect card type
     function getCardType(number) {
         if (/^4/.test(number)) return "Visa";
         if (/^5[1-5]/.test(number)) return "MasterCard";
@@ -15,23 +14,17 @@ document.addEventListener("DOMContentLoaded", function () {
         return "";
     }
 
-    // Format card number
     creditCardInput?.addEventListener("input", function (e) {
         const rawValue = e.target.value.replace(/\D/g, "").slice(0, 16);
         const cardType = getCardType(rawValue);
         let formatted = rawValue;
 
         if (cardType === "American Express") {
-            formatted = rawValue
-                .replace(/^(\d{4})(\d{0,6})(\d{0,5}).*/, (_, g1, g2, g3) =>
-                    [g1, g2, g3].filter(Boolean).join(" ")
-                )
-                .slice(0, 17);
+            formatted = rawValue.replace(/^(\d{4})(\d{0,6})(\d{0,5}).*/, (_, g1, g2, g3) =>
+                [g1, g2, g3].filter(Boolean).join(" ")
+            ).slice(0, 17);
         } else {
-            formatted = rawValue
-                .replace(/(.{4})/g, "$1 ")
-                .trim()
-                .slice(0, 19);
+            formatted = rawValue.replace(/(.{4})/g, "$1 ").trim().slice(0, 19);
         }
 
         e.target.value = formatted;
@@ -39,7 +32,6 @@ document.addEventListener("DOMContentLoaded", function () {
         creditCardInput.setSelectionRange(formatted.length, formatted.length);
     });
 
-    // Submit checkout form
     checkoutForm?.addEventListener("submit", async function (event) {
         event.preventDefault();
         checkoutButton.disabled = true;
@@ -88,34 +80,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Order filtering logic
-    const filterSelect = document.getElementById("filter");
-    if (filterSelect) {
-        filterSelect.addEventListener("change", filterOrders);
-    }
-
-    function filterOrders() {
-        const filter = document.getElementById("filter").value;
-        const rows = document.querySelectorAll(".order-row");
-
-        rows.forEach(row => {
-            const status = row.getAttribute("data-status") === "True";
-            const settled = row.getAttribute("data-settled") === "True";
-
-            if (
-                filter === "all" ||
-                (filter === "success" && status) ||
-                (filter === "failed" && !status) ||
-                (filter === "settled" && settled)
-            ) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        });
-    }
-
-    // Settle order (inline button)
     window.settleOrder = async function (orderId) {
         try {
             const response = await fetch(`/settle_order/${orderId}`, {
@@ -134,4 +98,4 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Failed to settle the order. Please try again.");
         }
     };
-};
+});

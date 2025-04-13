@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template
 from bson.objectid import ObjectId
 from flask_pymongo import PyMongo
 from flask_cors import CORS
-from datetime import datetime, timedelta  # Added for timestamp and expiry
+from datetime import datetime, timedelta
 import requests
 import re
 
@@ -26,22 +26,40 @@ API_ENDPOINTS = {
 }
 
 def mask_card_number(card_number):
-    """Masks all but the last four digits of a credit card number."""
     return "*" * (len(card_number) - 4) + card_number[-4:]
 
 def get_card_type(card_number):
-    """Determines the credit card type based on the first few digits."""
     card_patterns = {
         "Visa": r"^4[0-9]{12}(?:[0-9]{3})?$",
         "MasterCard": r"^5[1-5][0-9]{14}$",
         "American Express": r"^3[47][0-9]{13}$",
         "Discover": r"^6(?:011|5[0-9]{2})[0-9]{12}$"
     }
-    
     for card_type, pattern in card_patterns.items():
         if re.match(pattern, card_number):
             return card_type
     return "Unknown"
+
+def is_valid_expiration_date(exp_date_str):
+    """Validates expiration date format MM/YY and checks if it is not expired."""
+    try:
+        if not re.match(r"^(0[1-9]|1[0-2])\/\d{2}$", exp_date_str):
+            return False, "Expiration date must be in MM/YY format"
+
+        exp_month, exp_year = map(int, exp_date_str.split("/"))
+        exp_year += 2000  # Convert YY to YYYY
+
+        now = datetime.utcnow()
+        # Set expiration to the end of the expiration month
+        exp_date = datetime(exp_year, exp_month, 1) + timedelta(days=31)
+        exp_date = datetime(exp_date.year, exp_date.month, 1) - timedelta(days=1)
+
+        if now > exp_date:
+            return False, "Card has expired"
+
+        return True, ""
+    except Exception as e:
+        return False, f"Invalid expiration date: {str(e)}"
 
 @app.route('/process_payment', methods=['POST'])
 def process_payment():
@@ -58,6 +76,11 @@ def process_payment():
 
         if not all([first_name, last_name, credit_card, exp_date, cvv]):
             return jsonify({"error": "Missing required fields"}), 400
+
+        # Validate expiration date
+        valid_exp, exp_message = is_valid_expiration_date(exp_date)
+        if not valid_exp:
+            return jsonify({"error": exp_message}), 400
 
         masked_card = mask_card_number(credit_card)
         card_type = get_card_type(credit_card)
@@ -93,7 +116,6 @@ def process_payment():
         order_id = inserted_order.inserted_id
 
         if success:
-            #Insert authorization record with expiry
             mongo.db.auth_collection.insert_one({
                 "order_id": str(order_id),
                 "timestamp": datetime.utcnow(),
