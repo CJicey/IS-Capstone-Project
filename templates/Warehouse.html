@@ -32,6 +32,12 @@
         .filter {
             margin-bottom: 10px;
         }
+        .header-nav a {
+            text-decoration: none;
+            color: #6f4e37;
+            font-weight: bold;
+            margin-right: 10px;
+        }
         button {
             background-color: #6f4e37;
             color: white;
@@ -44,35 +50,33 @@
             background-color: #ccc;
             cursor: not-allowed;
         }
+        #settleResult {
+            margin-top: 10px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Welcome to Our Coffee Warehouse</h1>
         
-        <div class="section">
-            <h2>Inventory</h2>
-            <ul>
-                <li>Product 1 - 5000 kg</li>
-                <li>Product 2 - 3000 kg</li>
-                <li>Product 3 - 2000 kg</li>
-                <li>Product 4 - 1000 kg</li>
-            </ul>
-        </div>
-        
-        <div class="section">
-            <h2>Storage Areas</h2>
-            <p>Our warehouse is divided into three main sections:</p>
-            <ul>
-                <li>Green Coffee Storage</li>
-                <li>Roasted Coffee Storage</li>
-                <li>Packaging & Distribution</li>
-            </ul>
-        </div>
+        <nav class="header-nav">
+            <a href="{{ url_for('index') }}">Home</a>
+        </nav>
         
         <div class="section">
             <h2>Order Processing</h2>
             <p>All orders are processed within 24 hours. Customers can track their shipments through our online portal.</p>
+        </div>
+
+        <div class="section">
+            <h2>Settle an Order</h2>
+            <form id="settle-form">
+                <label>Order ID: <input type="text" id="settleOrderId" required></label><br><br>
+                <label>Final Amount: <input type="number" step="0.01" id="finalAmount" required></label><br><br>
+                <button type="submit">Submit Settlement</button>
+            </form>
+            <p id="settleResult"></p>
         </div>
 
         <div class="section">
@@ -89,11 +93,11 @@
             </div>
 
             {% if orders %}
-                <ul>
+                <ul id="orders-list">
                     {% for order in orders %}
                         <li class="order-row"
-                            data-status="{{ order.success }}"
-                            data-settled="{{ order.settled }}">
+                            data-status="{{ 'success' if order.success else 'failed' }}"
+                            data-settled="{{ 'yes' if order.settled else 'no' }}">
                             <strong>Order ID:</strong> {{ order._id }}<br>
                             <strong>Customer:</strong> {{ order.customer_name }}<br>
                             <strong>Product:</strong> {{ order.product }}<br>
@@ -113,6 +117,7 @@
                 <p>No orders found.</p>
             {% endif %}
         </div>
+
     </div>
     <script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
 </body>
