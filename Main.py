@@ -4,6 +4,7 @@ from flask_pymongo import PyMongo
 from flask_cors import CORS
 import requests
 import re
+from datetime import datetime, timedelta  # <-- Added for timestamp and expiry
 
 app = Flask(__name__)
 CORS(app)
@@ -58,11 +59,9 @@ def process_payment():
         if not all([first_name, last_name, credit_card, exp_date, cvv]):
             return jsonify({"error": "Missing required fields"}), 400
 
-        # Mask credit card number
         masked_card = mask_card_number(credit_card)
         card_type = get_card_type(credit_card)
 
-        # Decide which API to call based on card number
         if credit_card.startswith("4"):
             api_url = API_ENDPOINTS["success"]
         elif credit_card.startswith("5"):
@@ -80,7 +79,6 @@ def process_payment():
         auth_token = api_response.get("AuthorizationToken")
         authorized_amount = api_response.get("AuthorizedAmount", 0.0)
 
-        # Save order data to MongoDB
         order_data = {
             "fname": first_name,
             "lname": last_name,
@@ -91,9 +89,19 @@ def process_payment():
             "authorized_amount": authorized_amount,
             "authorization_token": auth_token
         }
-        mongo.db.orders.insert_one(order_data)
+        inserted_order = mongo.db.orders.insert_one(order_data)
+        order_id = inserted_order.inserted_id
 
         if success:
+            # ✅ Insert authorization record with expiry
+            mongo.db.auth_collection.insert_one({
+                "order_id": str(order_id),
+                "timestamp": datetime.utcnow(),
+                "auth_token": f"{order_id}_{auth_token}",
+                "auth_amount": authorized_amount,
+                "auth_expiry": datetime.utcnow() + timedelta(days=7)
+            })
+
             return jsonify({
                 "status": "success",
                 "message": "Transaction Approved!",
@@ -116,7 +124,7 @@ def process_payment():
     except Exception as e:
         print("❌ Server error:", e)
         return jsonify({"error": "Internal server error"}), 500
-    
+
 @app.route('/settle_order/<order_id>', methods=['POST'])
 def settle_order(order_id):
     try:
