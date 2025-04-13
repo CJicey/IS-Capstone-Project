@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Format card number with spaces
-    creditCardInput.addEventListener("input", function (e) {
+    creditCardInput?.addEventListener("input", function (e) {
         const rawValue = e.target.value.replace(/\D/g, "").slice(0, 16);
         const cardType = getCardType(rawValue);
         let formatted = rawValue;
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Submit form
-    checkoutForm.addEventListener("submit", async function (event) {
+    checkoutForm?.addEventListener("submit", async function (event) {
         event.preventDefault();
 
         checkoutButton.disabled = true;
@@ -99,4 +99,49 @@ document.addEventListener("DOMContentLoaded", function () {
             checkoutButton.textContent = "Checkout Now";
         }
     });
+
+    // Order filtering logic
+    const filterSelect = document.getElementById("filter");
+    if (filterSelect) {
+        filterSelect.addEventListener("change", function () {
+            const value = this.value;
+            const orders = document.querySelectorAll(".order-row");
+
+            orders.forEach(order => {
+                const status = order.getAttribute("data-status") === "True";
+                const settled = order.getAttribute("data-settled") === "True";
+
+                if (
+                    value === "all" ||
+                    (value === "success" && status) ||
+                    (value === "failed" && !status) ||
+                    (value === "settled" && settled)
+                ) {
+                    order.style.display = "";
+                } else {
+                    order.style.display = "none";
+                }
+            });
+        });
+    }
+
+    // Settle order function
+    window.settleOrder = async function (orderId) {
+        try {
+            const response = await fetch(`/settle_order/${orderId}`, {
+                method: "POST"
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                alert(data.message);
+                window.location.reload();
+            } else {
+                alert(data.error || "An error occurred during settlement.");
+            }
+        } catch (error) {
+            console.error("Settle order failed:", error);
+            alert("Failed to settle the order. Please try again.");
+        }
+    };
 });

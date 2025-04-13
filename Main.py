@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, render_template
+from bson.objectid import ObjectId
 from flask_pymongo import PyMongo
 from flask_cors import CORS
 import requests
@@ -115,6 +116,24 @@ def process_payment():
     except Exception as e:
         print("❌ Server error:", e)
         return jsonify({"error": "Internal server error"}), 500
+    
+@app.route('/settle_order/<order_id>', methods=['POST'])
+def settle_order(order_id):
+    try:
+        order = mongo.db.orders.find_one({"_id": ObjectId(order_id)})
+        if not order:
+            return jsonify({"error": "Order not found"}), 404
+
+        if order.get("success") and not order.get("settled"):
+            mongo.db.orders.update_one(
+                {"_id": ObjectId(order_id)},
+                {"$set": {"settled": True}}
+            )
+            return jsonify({"message": "Order settled successfully"}), 200
+        else:
+            return jsonify({"error": "Order already settled or not authorized"}), 400
+    except Exception as e:
+        return jsonify({"error": f"Failed to settle order: {str(e)}"}), 500
 
 @app.route('/')
 def index():

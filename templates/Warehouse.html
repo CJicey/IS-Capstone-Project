@@ -29,6 +29,21 @@
             border-radius: 5px;
             background: #fff8e1;
         }
+        .filter {
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #6f4e37;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -62,15 +77,34 @@
 
         <div class="section">
             <h2>Orders</h2>
+
+            <div class="filter">
+                <label for="filter">Filter Orders:</label>
+                <select id="filter" onchange="filterOrders()">
+                    <option value="all">All</option>
+                    <option value="success">Successful</option>
+                    <option value="failed">Failed</option>
+                    <option value="settled">Settled</option>
+                </select>
+            </div>
+
             {% if orders %}
                 <ul>
                     {% for order in orders %}
-                        <li>
+                        <li class="order-row"
+                            data-status="{{ order.success }}"
+                            data-settled="{{ order.settled }}">
                             <strong>Order ID:</strong> {{ order._id }}<br>
                             <strong>Customer:</strong> {{ order.customer_name }}<br>
                             <strong>Product:</strong> {{ order.product }}<br>
                             <strong>Quantity:</strong> {{ order.quantity }} kg<br>
-                            <strong>Status:</strong> {{ order.status }}<br>
+                            <strong>Status:</strong> {{ 'Success' if order.success else 'Failed' }}<br>
+                            <strong>Settled:</strong> {{ 'Yes' if order.settled else 'No' }}<br>
+                            {% if order.success and not order.settled %}
+                                <button onclick="settleOrder('{{ order._id }}')">Settle Order</button>
+                            {% else %}
+                                <button disabled>Settle Order</button>
+                            {% endif %}
                             <hr>
                         </li>
                     {% endfor %}
@@ -80,5 +114,6 @@
             {% endif %}
         </div>
     </div>
+    <script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
 </body>
 </html>
