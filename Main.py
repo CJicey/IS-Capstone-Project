@@ -18,7 +18,6 @@ try:
 except Exception as e:
     print(f"❌ ERROR: MongoDB connection failed - {e}")
 
-# Mock API endpoints
 API_ENDPOINTS = {
     "success": "https://e7642f03-e889-4c5c-8dc2-f1f52461a5ab.mock.pstmn.io/get?authorize=success",
     "insufficient": "https://e7642f03-e889-4c5c-8dc2-f1f52461a5ab.mock.pstmn.io/get?authorize=insufficient",
