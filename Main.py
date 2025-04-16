@@ -9,7 +9,7 @@ import re
 app = Flask(__name__)
 CORS(app)
 
-app.config["MONGO_URI"] = "mongodb+srv://CJicey:Baller10@cluster0.3dkrku9.mongodb.net/your_database_name"
+app.config["MONGO_URI"] = "mongodb://localhost:27017/CosmoCanyon"
 mongo = PyMongo(app)
 
 try:
@@ -41,16 +41,14 @@ def get_card_type(card_number):
     return "Unknown"
 
 def is_valid_expiration_date(exp_date_str):
-    """Validates expiration date format MM/YY and checks if it is not expired."""
     try:
         if not re.match(r"^(0[1-9]|1[0-2])\/\d{2}$", exp_date_str):
             return False, "Expiration date must be in MM/YY format"
 
         exp_month, exp_year = map(int, exp_date_str.split("/"))
-        exp_year += 2000  # Convert YY to YYYY
+        exp_year += 2000
 
         now = datetime.utcnow()
-        # Set expiration to the end of the expiration month
         exp_date = datetime(exp_year, exp_month, 1) + timedelta(days=31)
         exp_date = datetime(exp_date.year, exp_date.month, 1) - timedelta(days=1)
 
@@ -77,7 +75,6 @@ def process_payment():
         if not all([first_name, last_name, credit_card, exp_date, cvv]):
             return jsonify({"error": "Missing required fields"}), 400
 
-        # Validate expiration date
         valid_exp, exp_message = is_valid_expiration_date(exp_date)
         if not valid_exp:
             return jsonify({"error": exp_message}), 400
