@@ -12,11 +12,11 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #F4ECE1; /* Creamy beige */
-            color: #3E2F1B; /* Rich brown */
+            background-color: #F4ECE1;
+            color: #3E2F1B;
         }
         .header {
-            background-color: #534545; /* Earthy green */
+            background-color: #534545;
             color: white;
             display: flex;
             justify-content: space-between;
@@ -24,13 +24,38 @@
             padding: 15px 30px;
         }
         .company-logo {
-            width: 150px; /* Small logo size */
+            width: 150px;
             height: auto;
         }
         .header-nav a {
             color: white;
             text-decoration: none;
             margin: 0 15px;
+            font-weight: bold;
+        }
+        .right-header {
+            position: relative;
+        }
+        .cart-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+        }
+        .cart-icon {
+            height: 50px;
+            width: 50px;
+            transition: transform 0.3s ease;
+        }
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #A68A64;
+            color: white;
+            border-radius: 50%;
+            padding: 4px 8px;
+            font-size: 0.9em;
             font-weight: bold;
         }
         .hero {
@@ -43,7 +68,7 @@
             font-size: 3em;
         }
         .button {
-            background-color: #A68A64; /* Muted golden yellow */
+            background-color: #A68A64;
             color: white;
             padding: 15px 30px;
             border: none;
@@ -58,7 +83,7 @@
             padding: 20px;
         }
         .product {
-            background: #E6E4D9; /* Soft greenish beige */
+            background: #E6E4D9;
             padding: 20px;
             margin: 15px;
             border-radius: 8px;
@@ -66,13 +91,13 @@
             text-align: center;
         }
         .product img {
-            width: 300px; /* Set uniform width */
-            height: 300px; /* Set uniform height */
-            object-fit: cover; /* Ensure images are well-fitted */
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
             border-radius: 5px;
         }
         .footer {
-            background-color: #534545; /* Earthy green */
+            background-color: #534545;
             color: white;
             text-align: center;
             padding: 15px;
@@ -82,45 +107,68 @@
 </head>
 
 <body>
-    <!-- Header -->
     <header class="header">
         <div class="left-header">
             <img class="company-logo" src="{{ url_for('static', filename='images/Beans.png') }}" alt="Company Logo">
         </div>
         <div class="middle-header">
             <nav class="header-nav">
-                <a class="home-header" href="{{ url_for('index') }}">HOME</a>
-                <a class="checkout-header" href="{{ url_for('checkout') }}">CHECKOUT</a>
-                <a class="sale-header" href="{{ url_for('sale') }}">SALE</a>
-                <a class="warehouse-header" href="{{ url_for('warehouse') }}">WAREHOUSE</a>
-                <a class="aboutus-header" href="{{ url_for('about_us') }}">ABOUT US</a>
+                <a href="{{ url_for('index') }}">HOME</a>
+                <a href="{{ url_for('checkout') }}">CHECKOUT</a>
+                <a href="{{ url_for('sale') }}">SALE</a>
+                <a href="{{ url_for('warehouse') }}">WAREHOUSE</a>
+                <a href="{{ url_for('about_us') }}">ABOUT US</a>
             </nav>
         </div>
+        <div class="right-header">
+            <button class="cart-button" onclick="window.location.href='{{ url_for('checkout') }}'">
+                <img class="cart-icon" src="{{ url_for('static', filename='images/shoppingbag.jpg') }}" alt="Cart">
+                <span id="cart-count" class="cart-count">0</span>
+            </button>
+        </div>
     </header>
-    
+
     <main>
-        <section class="sale-items">
+        <section class="sale-items products">
             <div class="product">
-                <img src="{{ url_for('static', filename='images/logomug.png') }}" alt="Product 1">
+                <img src="{{ url_for('static', filename='images/logomug.png') }}" alt="B&T Mug">
                 <h2>B&T Mug</h2>
                 <p class="price"><del>$15.00</del> $10.00</p>
-                <button>Add to Cart</button>
+                <button onclick="addToCart()">Add to Cart</button>
             </div>
             <div class="product">
                 <img src="{{ url_for('static', filename='images/darkroastback.png') }}" alt="Product 2">
                 <h2>Product 2</h2>
                 <p class="price"><del>$80.00</del> $50.00</p>
-                <button>Add to Cart</button>
+                <button onclick="addToCart()">Add to Cart</button>
             </div>
             <div class="product">
                 <img src="{{ url_for('static', filename='images/product1.png') }}" alt="Product 3">
                 <h2>Product 3</h2>
                 <p class="price"><del>$120.00</del> $90.00</p>
-                <button>Add to Cart</button>
+                <button onclick="addToCart()">Add to Cart</button>
             </div>
         </section>
     </main>
-    
+
+    <footer class="footer">
+        <p>&copy; 2025 Company Name. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function updateCartCountDisplay() {
+            const count = parseInt(sessionStorage.getItem('cartCount')) || 0;
+            document.getElementById('cart-count').textContent = count;
+        }
+
+        function addToCart() {
+            let currentCount = parseInt(sessionStorage.getItem('cartCount')) || 0;
+            sessionStorage.setItem('cartCount', currentCount + 1);
+            updateCartCountDisplay();
+        }
+
+        document.addEventListener('DOMContentLoaded', updateCartCountDisplay);
+    </script>
     <footer>
         <p>&copy; 2025 Company Name. All rights reserved.</p>
     </footer>

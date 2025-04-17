@@ -92,10 +92,23 @@
             background: none;
             border: none;
             cursor: pointer;
+            position: relative;
         }
         .cart-icon {
-            height: 30px;
-            width: 30px;
+            height: 50px;
+            width: 50px;
+            transition: transform 0.3s ease;
+        }
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #A68A64;
+            color: white;
+            border-radius: 50%;
+            padding: 4px 8px;
+            font-size: 0.9em;
+            font-weight: bold;
         }
         #card-type {
             font-size: 1em;
@@ -119,12 +132,12 @@
                 <a href="{{ url_for('warehouse') }}">WAREHOUSE</a>
                 <a href="{{ url_for('about_us') }}">ABOUT US</a>
             </nav>
-        </div>
         <div class="right-header">
-            <button class="cart-button">
+            <button class="cart-button" onclick="goToCheckout()">
                 <img class="cart-icon" src="{{ url_for('static', filename='images/shoppingbag.jpg') }}" alt="Cart">
+                <span id="cart-count" class="cart-count">0</span>
             </button>
-        </div>
+            </div>
     </header>
 
     <section class="hero">
@@ -175,5 +188,24 @@
     </footer>
 
     <script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
+    <script>
+            function updateCartCount() {
+        const countElement = document.getElementById("cart-count");
+        let cartItemCount = parseInt(sessionStorage.getItem('cartCount')) || 0;
+        countElement.textContent = cartItemCount;
+
+        const icon = document.querySelector(".cart-icon");
+        icon.style.transform = "scale(1.2)";
+        setTimeout(() => {
+            icon.style.transform = "scale(1)";
+        }, 300);
+    }
+
+    function goToCheckout() {
+        window.location.href = "{{ url_for('checkout') }}";
+    }
+
+    document.addEventListener('DOMContentLoaded', updateCartCount);
+</script>
 </body>
 </html>
