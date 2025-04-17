@@ -1,4 +1,42 @@
+function updateCartCount() {
+    const countElement = document.getElementById("cart-count");
+    let cartItemCount = parseInt(sessionStorage.getItem('cartCount')) || 0;
+    countElement.textContent = cartItemCount;
+
+    const icon = document.querySelector(".cart-icon");
+    icon.style.transform = "scale(1.2)";
+    setTimeout(() => {
+        icon.style.transform = "scale(1)";
+    }, 300);
+}
+
+function toggleCartPreview() {
+    const preview = document.getElementById("cart-preview");
+    preview.style.display = preview.style.display === "block" ? "none" : "block";
+    populateCartPreview();
+}
+
+function populateCartPreview() {
+    const cartItemsContainer = document.getElementById("cart-items");
+    cartItemsContainer.innerHTML = "";
+
+    const cart = JSON.parse(sessionStorage.getItem("cart")) || [];
+
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = "<li>Your cart is empty.</li>";
+        return;
+    }
+
+    cart.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = `${item.name} - $${item.price} x ${item.quantity}`;
+        cartItemsContainer.appendChild(li);
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
+    updateCartCount();
+
     const checkoutForm = document.getElementById("checkout-form");
     const creditCardInput = document.getElementById("creditcard");
     const cardTypeDisplay = document.getElementById("card-type");
@@ -68,6 +106,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert(`✅ Transaction Approved!\nCard Type: ${data.card_type}\nMasked: ${data.masked_card}\nAmount: $${data.amount}`);
                 checkoutForm.reset();
                 cardTypeDisplay.textContent = "";
+
+                // Clear cart after successful payment
+                sessionStorage.removeItem("cart");
+                sessionStorage.setItem("cartCount", "0");
+                updateCartCount();
+                populateCartPreview();
             } else {
                 alert(`❌ Transaction Failed\nReason: ${data.message}`);
             }
@@ -79,23 +123,4 @@ document.addEventListener("DOMContentLoaded", function () {
             checkoutButton.textContent = "Checkout Now";
         }
     });
-
-    window.settleOrder = async function (orderId) {
-        try {
-            const response = await fetch(`/settle_order/${orderId}`, {
-                method: "POST"
-            });
-            const data = await response.json();
-
-            if (response.ok) {
-                alert(data.message);
-                window.location.reload();
-            } else {
-                alert(data.error || "An error occurred during settlement.");
-            }
-        } catch (error) {
-            console.error("Settle order failed:", error);
-            alert("Failed to settle the order. Please try again.");
-        }
-    };
 });

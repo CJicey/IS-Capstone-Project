@@ -10,10 +10,9 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
             background-color: #F4ECE1;
             color: #3E2F1B;
+            margin: 0;
         }
         .header {
             background-color: #534545;
@@ -25,16 +24,12 @@
         }
         .company-logo {
             width: 150px;
-            height: auto;
         }
         .header-nav a {
             color: white;
             text-decoration: none;
             margin: 0 15px;
             font-weight: bold;
-        }
-        .right-header {
-            position: relative;
         }
         .cart-button {
             background: none;
@@ -45,7 +40,6 @@
         .cart-icon {
             height: 50px;
             width: 50px;
-            transition: transform 0.3s ease;
         }
         .cart-count {
             position: absolute;
@@ -58,28 +52,10 @@
             font-size: 0.9em;
             font-weight: bold;
         }
-        .hero {
-            text-align: center;
-            background: url('{{ url_for("static", filename="images/hero-image.jpg") }}') no-repeat center center/cover;
-            color: rgb(186, 160, 160);
-            padding: 80px 20px;
-        }
-        .hero h1 {
-            font-size: 3em;
-        }
-        .button {
-            background-color: #A68A64;
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            cursor: pointer;
-            font-size: 1.2em;
-            margin-top: 20px;
-        }
         .products {
             display: flex;
-            justify-content: center;
             flex-wrap: wrap;
+            justify-content: center;
             padding: 20px;
         }
         .product {
@@ -87,14 +63,21 @@
             padding: 20px;
             margin: 15px;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         .product img {
             width: 300px;
             height: 300px;
             object-fit: cover;
-            border-radius: 5px;
+        }
+        .button {
+            background-color: #A68A64;
+            color: white;
+            padding: 10px 20px;
+            margin-top: 10px;
+            border: none;
+            cursor: pointer;
         }
         .footer {
             background-color: #534545;
@@ -105,27 +88,20 @@
         }
     </style>
 </head>
-
 <body>
     <header class="header">
-        <div class="left-header">
-            <img class="company-logo" src="{{ url_for('static', filename='images/Beans.png') }}" alt="Company Logo">
-        </div>
-        <div class="middle-header">
-            <nav class="header-nav">
-                <a href="{{ url_for('index') }}">HOME</a>
-                <a href="{{ url_for('checkout') }}">CHECKOUT</a>
-                <a href="{{ url_for('sale') }}">SALE</a>
-                <a href="{{ url_for('warehouse') }}">WAREHOUSE</a>
-                <a href="{{ url_for('about_us') }}">ABOUT US</a>
-            </nav>
-        </div>
-        <div class="right-header">
-            <button class="cart-button" onclick="window.location.href='{{ url_for('checkout') }}'">
-                <img class="cart-icon" src="{{ url_for('static', filename='images/shoppingbag.jpg') }}" alt="Cart">
-                <span id="cart-count" class="cart-count">0</span>
-            </button>
-        </div>
+        <img class="company-logo" src="{{ url_for('static', filename='images/Beans.png') }}" alt="Company Logo">
+        <nav class="header-nav">
+            <a href="{{ url_for('index') }}">HOME</a>
+            <a href="{{ url_for('checkout') }}">CHECKOUT</a>
+            <a href="{{ url_for('sale') }}">SALE</a>
+            <a href="{{ url_for('warehouse') }}">WAREHOUSE</a>
+            <a href="{{ url_for('about_us') }}">ABOUT US</a>
+        </nav>
+        <button class="cart-button" onclick="window.location.href='{{ url_for('checkout') }}'">
+            <img class="cart-icon" src="{{ url_for('static', filename='images/shoppingbag.jpg') }}" alt="Cart">
+            <span id="cart-count" class="cart-count">0</span>
+        </button>
     </header>
 
     <main>
@@ -134,63 +110,47 @@
                 <img src="{{ url_for('static', filename='images/lightroastfront.png') }}" alt="Light Roast">
                 <h2>Lighter Fare</h2>
                 <p class="price">$16.00</p>
-                <button class="button" onclick="addToCart('Lighter Fare')">Add to Cart</button>
+                <button class="button" onclick="addToCart('Lighter Fare', 16.00)">Add to Cart</button>
             </div>
             <div class="product">
                 <img src="{{ url_for('static', filename='images/mediumroastfront.png') }}" alt="Medium Roast">
                 <h2>Darker</h2>
                 <p class="price">$16.00</p>
-                <button class="button" onclick="addToCart('Darker')">Add to Cart</button>
+                <button class="button" onclick="addToCart('Darker', 16.00)">Add to Cart</button>
             </div>
             <div class="product">
                 <img src="{{ url_for('static', filename='images/darkroastfront.png') }}" alt="Dark Roast">
                 <h2>Dark & Potent</h2>
                 <p class="price">$16.00</p>
-                <button class="button" onclick="addToCart('Dark & Potent')">Add to Cart</button>
+                <button class="button" onclick="addToCart('Dark & Potent', 16.00)">Add to Cart</button>
             </div>
         </section>
-        <section class="sale-items products">
+
+        <section class="products">
             <div class="product">
                 <img src="{{ url_for('static', filename='images/logomug.png') }}" alt="B&T Mug">
                 <h2>B&T Mug</h2>
                 <p class="price"><del>$15.00</del> $10.00</p>
-                <button onclick="addToCart()">Add to Cart</button>
+                <button class="button" onclick="addToCart('B&T Mug', 10.00)">Add to Cart</button>
             </div>
             <div class="product">
                 <img src="{{ url_for('static', filename='images/darkroastback.png') }}" alt="Product 2">
                 <h2>Product 2</h2>
                 <p class="price"><del>$80.00</del> $50.00</p>
-                <button onclick="addToCart()">Add to Cart</button>
+                <button class="button" onclick="addToCart('Product 2', 50.00)">Add to Cart</button>
             </div>
             <div class="product">
                 <img src="{{ url_for('static', filename='images/product1.png') }}" alt="Product 3">
                 <h2>Product 3</h2>
                 <p class="price"><del>$120.00</del> $90.00</p>
-                <button onclick="addToCart()">Add to Cart</button>
+                <button class="button" onclick="addToCart('Product 3', 90.00)">Add to Cart</button>
             </div>
         </section>
-    </section>
     </main>
 
     <footer class="footer">
         <p>&copy; 2025 Company Name. All rights reserved.</p>
     </footer>
-    <script>
-        function updateCartCountDisplay() {
-            const count = parseInt(sessionStorage.getItem('cartCount')) || 0;
-            document.getElementById('cart-count').textContent = count;
-        }
-
-        function addToCart() {
-            let currentCount = parseInt(sessionStorage.getItem('cartCount')) || 0;
-            sessionStorage.setItem('cartCount', currentCount + 1);
-            updateCartCountDisplay();
-        }
-
-        document.addEventListener('DOMContentLoaded', updateCartCountDisplay);
-    </script>
-    <footer>
-        <p>&copy; 2025 Company Name. All rights reserved.</p>
-    </footer>
+    <script src="{{ url_for('static', filename='js/sale.js') }}"></script>
 </body>
 </html>
