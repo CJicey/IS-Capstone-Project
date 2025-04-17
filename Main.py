@@ -28,14 +28,12 @@ def mask_card_number(card_number):
     return "*" * (len(card_number) - 4) + card_number[-4:]
 
 def get_card_type(card_number):
-    card_patterns = {
-        "Visa": r"^4[0-9]{12}(?:[0-9]{3})?$",
-        "MasterCard": r"^5[1-5][0-9]{14}$",
-        "American Express": r"^3[47][0-9]{13}$",
-    }
-    for card_type, pattern in card_patterns.items():
-        if re.match(pattern, card_number):
-            return card_type
+    if re.match(r"^4", card_number):
+        return "Visa"
+    elif re.match(r"^5[1-5]", card_number):
+        return "MasterCard"
+    elif re.match(r"^3[47]", card_number):
+        return "American Express"
     return "Unknown"
 
 def is_valid_expiration_date(exp_date_str):

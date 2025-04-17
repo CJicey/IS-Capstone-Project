@@ -69,8 +69,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 cardTypeDisplay.textContent = "";
 
                 // Clear cart after successful payment
-                sessionStorage.removeItem("cart");
-                sessionStorage.setItem("cartCount", "0");
+                localStorage.removeItem("cart");
+                localStorage.setItem("cartCount", "0");
                 updateCartCount();
                 populateCartPreview();
             } else {
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function updateCartCount() {
     const countElement = document.getElementById("cart-count");
-    let cartItemCount = parseInt(sessionStorage.getItem('cartCount')) || 0;
+    let cartItemCount = parseInt(localStorage.getItem('cartCount')) || 0;
     countElement.textContent = cartItemCount;
 
     const icon = document.querySelector(".cart-icon");
@@ -108,7 +108,7 @@ function populateCartPreview() {
     const cartItemsContainer = document.getElementById("cart-items");
     cartItemsContainer.innerHTML = "";
 
-    const cart = JSON.parse(sessionStorage.getItem("cart")) || [];
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
     if (cart.length === 0) {
         cartItemsContainer.innerHTML = "<li>Your cart is empty.</li>";
