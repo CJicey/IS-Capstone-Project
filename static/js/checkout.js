@@ -1,39 +1,3 @@
-function updateCartCount() {
-    const countElement = document.getElementById("cart-count");
-    let cartItemCount = parseInt(sessionStorage.getItem('cartCount')) || 0;
-    countElement.textContent = cartItemCount;
-
-    const icon = document.querySelector(".cart-icon");
-    icon.style.transform = "scale(1.2)";
-    setTimeout(() => {
-        icon.style.transform = "scale(1)";
-    }, 300);
-}
-
-function toggleCartPreview() {
-    const preview = document.getElementById("cart-preview");
-    preview.style.display = preview.style.display === "block" ? "none" : "block";
-    populateCartPreview();
-}
-
-function populateCartPreview() {
-    const cartItemsContainer = document.getElementById("cart-items");
-    cartItemsContainer.innerHTML = "";
-
-    const cart = JSON.parse(sessionStorage.getItem("cart")) || [];
-
-    if (cart.length === 0) {
-        cartItemsContainer.innerHTML = "<li>Your cart is empty.</li>";
-        return;
-    }
-
-    cart.forEach(item => {
-        const li = document.createElement("li");
-        li.textContent = `${item.name} - $${item.price} x ${item.quantity}`;
-        cartItemsContainer.appendChild(li);
-    });
-}
-
 document.addEventListener("DOMContentLoaded", function () {
     updateCartCount();
 
@@ -46,9 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (/^4/.test(number)) return "Visa";
         if (/^5[1-5]/.test(number)) return "MasterCard";
         if (/^3[47]/.test(number)) return "American Express";
-        if (/^6(?:011|5)/.test(number)) return "Discover";
-        if (/^35(2[89]|[3-8][0-9])/.test(number)) return "JCB";
-        if (/^3(?:0[0-5]|[68])/.test(number)) return "Diners Club";
         return "";
     }
 
@@ -124,3 +85,39 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+function updateCartCount() {
+    const countElement = document.getElementById("cart-count");
+    let cartItemCount = parseInt(sessionStorage.getItem('cartCount')) || 0;
+    countElement.textContent = cartItemCount;
+
+    const icon = document.querySelector(".cart-icon");
+    icon.style.transform = "scale(1.2)";
+    setTimeout(() => {
+        icon.style.transform = "scale(1)";
+    }, 300);
+}
+
+function toggleCartPreview() {
+    const preview = document.getElementById("cart-preview");
+    preview.style.display = preview.style.display === "block" ? "none" : "block";
+    populateCartPreview();
+}
+
+function populateCartPreview() {
+    const cartItemsContainer = document.getElementById("cart-items");
+    cartItemsContainer.innerHTML = "";
+
+    const cart = JSON.parse(sessionStorage.getItem("cart")) || [];
+
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = "<li>Your cart is empty.</li>";
+        return;
+    }
+
+    cart.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = `${item.name} - $${item.price} x ${item.quantity}`;
+        cartItemsContainer.appendChild(li);
+    });
+}
