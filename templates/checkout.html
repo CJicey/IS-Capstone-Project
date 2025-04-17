@@ -15,24 +15,53 @@
             color: #3E2F1B;
             line-height: 1.6;
         }
+
         .header {
-            background-color: #534545;
-            color: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            background-color: #534545;
+            color: white;
             padding: 20px 30px;
+            gap: 20px;
         }
+
+        .left-header,
+        .middle-header,
+        .right-header {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .middle-header {
+            text-align: center;
+        }
+
+        .right-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
         .company-logo {
             width: 120px;
             height: auto;
         }
+
+        .header-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
         .header-nav a {
             color: white;
             text-decoration: none;
-            margin: 0 20px;
+            margin: 0 15px;
             font-weight: bold;
         }
+
         .hero {
             text-align: center;
             background: url('{{ url_for("static", filename="images/hero-image.jpg") }}') no-repeat center center/cover;
@@ -40,17 +69,21 @@
             padding: 100px 20px;
             margin-bottom: 40px;
         }
+
         .hero h1 {
             font-size: 3.5em;
         }
+
         .main-content {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
+
         .form-group {
             margin-bottom: 20px;
         }
+
         .form-group input {
             width: 100%;
             padding: 15px;
@@ -60,10 +93,12 @@
             background-color: #fff;
             font-size: 1em;
         }
+
         .form-group input[type="text"]:focus {
             border-color: #534545;
             outline: none;
         }
+
         .button {
             background-color: #A68A64;
             color: white;
@@ -75,9 +110,11 @@
             width: 100%;
             border-radius: 5px;
         }
+
         .button:hover {
             background-color: #534545;
         }
+
         .footer {
             background-color: #534545;
             color: white;
@@ -85,20 +122,20 @@
             padding: 20px;
             margin-top: 40px;
         }
-        .right-header {
-            position: relative;
-        }
+
         .cart-button {
             background: none;
             border: none;
             cursor: pointer;
             position: relative;
         }
+
         .cart-icon {
             height: 50px;
             width: 50px;
             transition: transform 0.3s ease;
         }
+
         .cart-count {
             position: absolute;
             top: -10px;
@@ -110,11 +147,34 @@
             font-size: 0.9em;
             font-weight: bold;
         }
+
         #card-type {
             font-size: 1em;
             color: #534545;
             font-weight: bold;
             margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .middle-header {
+                width: 100%;
+                text-align: left;
+            }
+
+            .header-nav {
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .right-header {
+                width: 100%;
+                justify-content: flex-start;
+            }
         }
     </style>
 </head>
@@ -132,12 +192,13 @@
                 <a href="{{ url_for('warehouse') }}">WAREHOUSE</a>
                 <a href="{{ url_for('about_us') }}">ABOUT US</a>
             </nav>
+        </div>
         <div class="right-header">
             <button class="cart-button" onclick="goToCheckout()">
                 <img class="cart-icon" src="{{ url_for('static', filename='images/shoppingbag.jpg') }}" alt="Cart">
                 <span id="cart-count" class="cart-count">0</span>
             </button>
-            </div>
+        </div>
     </header>
 
     <section class="hero">
@@ -188,24 +249,25 @@
     </footer>
 
     <script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
+
     <script>
-            function updateCartCount() {
-        const countElement = document.getElementById("cart-count");
-        let cartItemCount = parseInt(sessionStorage.getItem('cartCount')) || 0;
-        countElement.textContent = cartItemCount;
+        function updateCartCount() {
+            const countElement = document.getElementById("cart-count");
+            let cartItemCount = parseInt(sessionStorage.getItem('cartCount')) || 0;
+            countElement.textContent = cartItemCount;
 
-        const icon = document.querySelector(".cart-icon");
-        icon.style.transform = "scale(1.2)";
-        setTimeout(() => {
-            icon.style.transform = "scale(1)";
-        }, 300);
-    }
+            const icon = document.querySelector(".cart-icon");
+            icon.style.transform = "scale(1.2)";
+            setTimeout(() => {
+                icon.style.transform = "scale(1)";
+            }, 300);
+        }
 
-    function goToCheckout() {
-        window.location.href = "{{ url_for('checkout') }}";
-    }
+        function goToCheckout() {
+            window.location.href = "{{ url_for('checkout') }}";
+        }
 
-    document.addEventListener('DOMContentLoaded', updateCartCount);
-</script>
+        document.addEventListener('DOMContentLoaded', updateCartCount);
+    </script>
 </body>
 </html>

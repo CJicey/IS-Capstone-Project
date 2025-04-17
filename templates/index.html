@@ -96,35 +96,9 @@
         <p>Bold, smooth, and irresistibly flavorful.</p>
         <button class="button" onclick="window.location.href='{{ url_for('sale') }}'">Shop now</button>
     </section>
-    <section class="products">
-        <div class="product">
-            <img src="{{ url_for('static', filename='images/lightroastfront.png') }}" alt="Light Roast">
-            <h2>Lighter Fare</h2>
-            <p class="price">$16.00</p>
-            <button class="button" onclick="addToCart('Lighter Fare')">Add to Cart</button>
-        </div>
-        <div class="product">
-            <img src="{{ url_for('static', filename='images/mediumroastfront.png') }}" alt="Medium Roast">
-            <h2>Darker</h2>
-            <p class="price">$16.00</p>
-            <button class="button" onclick="addToCart('Darker')">Add to Cart</button>
-        </div>
-        <div class="product">
-            <img src="{{ url_for('static', filename='images/darkroastfront.png') }}" alt="Dark Roast">
-            <h2>Dark & Potent</h2>
-            <p class="price">$16.00</p>
-            <button class="button" onclick="addToCart('Dark & Potent')">Add to Cart</button>
-        </div>
-    </section>
     <footer class="footer">
         <p>&copy; 2025 Beans & Things. All rights reserved.</p>
     </footer>
-
-    <script>
-        function addToCart(item) {
-            alert(item + " added to cart!");
-        }
-    </script>
 </body>
 </html>
 

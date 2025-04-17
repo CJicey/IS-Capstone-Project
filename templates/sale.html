@@ -129,6 +129,26 @@
     </header>
 
     <main>
+        <section class="products">
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/lightroastfront.png') }}" alt="Light Roast">
+                <h2>Lighter Fare</h2>
+                <p class="price">$16.00</p>
+                <button class="button" onclick="addToCart('Lighter Fare')">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/mediumroastfront.png') }}" alt="Medium Roast">
+                <h2>Darker</h2>
+                <p class="price">$16.00</p>
+                <button class="button" onclick="addToCart('Darker')">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/darkroastfront.png') }}" alt="Dark Roast">
+                <h2>Dark & Potent</h2>
+                <p class="price">$16.00</p>
+                <button class="button" onclick="addToCart('Dark & Potent')">Add to Cart</button>
+            </div>
+        </section>
         <section class="sale-items products">
             <div class="product">
                 <img src="{{ url_for('static', filename='images/logomug.png') }}" alt="B&T Mug">
@@ -149,12 +169,12 @@
                 <button onclick="addToCart()">Add to Cart</button>
             </div>
         </section>
+    </section>
     </main>
 
     <footer class="footer">
         <p>&copy; 2025 Company Name. All rights reserved.</p>
     </footer>
-
     <script>
         function updateCartCountDisplay() {
             const count = parseInt(sessionStorage.getItem('cartCount')) || 0;
