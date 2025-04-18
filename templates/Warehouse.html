@@ -45,7 +45,7 @@
                             <strong>Status:</strong> {{ 'Success' if order.success else 'Failed' }}<br>
                             <strong>Settled:</strong> {{ 'Yes' if order.settled else 'No' }}<br>
                             {% if order.success and not order.settled %}
-                                <button onclick="settleOrder('{{ order._id }}')">Settle Order</button>
+                                <button onclick="settleOrder('{{ order._id.__str__() }}')">Settle Order</button>
                             {% else %}
                                 <button disabled>Settle Order</button>
                             {% endif %}
