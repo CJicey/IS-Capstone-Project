@@ -10,25 +10,34 @@ document.addEventListener("DOMContentLoaded", function () {
         if (/^4/.test(number)) return "Visa";
         if (/^5[1-5]/.test(number)) return "MasterCard";
         if (/^3[47]/.test(number)) return "American Express";
+        if (/^6(?:011|5)/.test(number)) return "Discover";
         return "";
     }
 
     creditCardInput?.addEventListener("input", function (e) {
-        const rawValue = e.target.value.replace(/\D/g, "").slice(0, 16);
-        const cardType = getCardType(rawValue);
-        let formatted = rawValue;
+        const rawDigits = e.target.value.replace(/\D/g, ""); // remove all non-digit characters
+        let formatted = rawDigits;
 
+        const cardType = getCardType(rawDigits);
+
+        // Format card number based on type
         if (cardType === "American Express") {
-            formatted = rawValue.replace(/^(\d{4})(\d{0,6})(\d{0,5}).*/, (_, g1, g2, g3) =>
+            formatted = rawDigits.replace(/^(\d{4})(\d{0,6})(\d{0,5}).*/, (_, g1, g2, g3) =>
                 [g1, g2, g3].filter(Boolean).join(" ")
             ).slice(0, 17);
         } else {
-            formatted = rawValue.replace(/(.{4})/g, "$1 ").trim().slice(0, 19);
+            formatted = rawDigits.replace(/(.{4})/g, "$1 ").trim().slice(0, 19);
         }
 
         e.target.value = formatted;
-        cardTypeDisplay.textContent = cardType ? `Card Type: ${cardType}` : "";
         creditCardInput.setSelectionRange(formatted.length, formatted.length);
+
+        // Only show card type after 6+ digits entered
+        if (rawDigits.length >= 6) {
+            cardTypeDisplay.textContent = cardType ? `Card Type: ${cardType}` : "Unknown Card Type";
+        } else {
+            cardTypeDisplay.textContent = "";
+        }
     });
 
     checkoutForm?.addEventListener("submit", async function (event) {
