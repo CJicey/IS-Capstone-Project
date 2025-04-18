@@ -4,75 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/general.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/eccomerce.css') }}">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #F4ECE1; /* Creamy beige */
-            color: #3E2F1B; /* Rich brown */
-        }
-        .header {
-            background-color: #534545; /* Earthy green */
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 30px;
-        }
-        .company-logo {
-            width: 150px; /* Small logo size */
-            height: auto;
-        }
-        .header-nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: bold;
-        }
-        .hero {
-            text-align: center;
-            background: url('{{ url_for("static", filename="images/hero-image.jpg") }}') no-repeat center center/cover;
-            color: rgb(186, 160, 160);
-            padding: 80px 20px;
-        }
-        .hero h1 {
-            font-size: 3em;
-        }
-        .button {
-            background-color: #A68A64; /* Muted golden yellow */
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            cursor: pointer;
-            font-size: 1.2em;
-            margin-top: 20px;
-        }
-        .footer {
-            background-color: #534545; /* Earthy green */
-            color: white;
-            text-align: center;
-            padding: 15px;
-            margin-top: 20px;
-        }
-        .about-content {
-            padding: 20px;
-            text-align: center;
-        }
-        .about-content h2 {
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-        .about-content p {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
         <div class="left-header">
             <img class="company-logo" src="{{ url_for('static', filename='images/Beans.png') }}" alt="Company Logo">

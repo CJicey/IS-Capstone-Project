@@ -1,38 +1,207 @@
-input {
-  border-width: 1px;
-  border-style: solid;
-  border-color: rgb(200, 200, 200);
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 16px;
-  padding-right: 16px;
-  font-size: 16px;
-  border-radius: 8px;
-  margin-bottom: 12px;
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #F4ECE1;
+    color: #3E2F1B;
+    line-height: 1.6;
 }
 
-.name,
-.cardinfo,
-.misc-address{
-width: 300px;
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: #534545;
+    color: white;
+    padding: 20px 30px;
+    gap: 20px;
 }
 
-.address,
-.creditcardnumber{
-  display: block;
-  width: 640px;
+.left-header,
+.middle-header,
+.right-header {
+    flex: 1;
+    min-width: 150px;
 }
 
-button {
-  background-color: rgb(47, 127, 231);
-  color: white;
-  border: none;
-  width: 300px;
-  padding-top: 14px;
-  padding-bottom: 14px;
-  font-size: 18px;
-  font-weight: bold;
-  border-radius: 8px;
-  display: block;
-  margin-top: 25px;
+.middle-header {
+    text-align: center;
+}
+
+.right-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: relative;
+}
+
+.company-logo {
+    width: 120px;
+    height: auto;
+}
+
+.header-nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.header-nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+}
+
+.hero {
+    text-align: center;
+    background: url('{{ url_for("static", filename="images/hero-image.jpg") }}') no-repeat center center/cover;
+    color: rgb(186, 160, 160);
+    padding: 100px 20px;
+    margin-bottom: 40px;
+}
+
+.hero h1 {
+    font-size: 3.5em;
+}
+
+.main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0;
+    border: 2px solid #A68A64;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 1em;
+}
+
+.form-group input[type="text"]:focus {
+    border-color: #534545;
+    outline: none;
+}
+
+.button {
+    background-color: #A68A64;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    margin-top: 20px;
+    width: 100%;
+    border-radius: 5px;
+}
+
+.button:hover {
+    background-color: #534545;
+}
+
+.footer {
+    background-color: #534545;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+.cart-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.cart-icon {
+    height: 50px;
+    width: 50px;
+    transition: transform 0.3s ease;
+}
+
+.cart-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #A68A64;
+    color: white;
+    border-radius: 50%;
+    padding: 4px 8px;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+#card-type {
+    font-size: 1em;
+    color: #534545;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.cart-preview {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: #fff;
+    color: #3E2F1B;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    display: none;
+    z-index: 10;
+}
+
+.cart-preview ul {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+}
+
+.cart-preview li {
+    padding: 10px 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.cart-preview li:last-child {
+    border-bottom: none;
+}
+
+.cart-preview h4 {
+    margin: 10px;
+    font-size: 1.2em;
+    border-bottom: 1px solid #ccc;
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .middle-header {
+        width: 100%;
+        text-align: left;
+    }
+
+    .header-nav {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .right-header {
+        width: 100%;
+        justify-content: flex-start;
+    }
 }
