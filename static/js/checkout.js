@@ -60,13 +60,14 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // Calculate total amount from cart
+        // Load cart and calculate total
         const cart = JSON.parse(localStorage.getItem("cart")) || [];
         const totalAmount = cart.reduce((sum, item) => {
             return sum + parseFloat(item.price) * item.quantity;
         }, 0);
 
         formData.totalAmount = totalAmount;
+        formData.cart = cart; // 🆕 Include cart details
 
         try {
             const response = await fetch("/process_payment", {
@@ -146,17 +147,14 @@ function removeFromCart(index) {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
     if (index >= 0 && index < cart.length) {
-        // Reduce cart count
         let cartCount = parseInt(localStorage.getItem("cartCount")) || 0;
         cartCount -= cart[index].quantity;
         if (cartCount < 0) cartCount = 0;
 
-        // Remove item and update storage
         cart.splice(index, 1);
         localStorage.setItem("cart", JSON.stringify(cart));
         localStorage.setItem("cartCount", cartCount.toString());
 
-        // Refresh UI
         updateCartCount();
         populateCartPreview();
         updateCartTotalDisplay();

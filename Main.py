@@ -189,7 +189,7 @@ def warehouse():
     orders = list(mongo.db.orders.find())
 
     for order in orders:
-        order.setdefault("totalAmount", 0.0)  # Add default if missing
+        order.setdefault("totalAmount", 0.0) 
         order.setdefault("cart", [])
         order.setdefault("first_name", "Unknown")
         order.setdefault("last_name", "")
