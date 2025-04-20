@@ -38,12 +38,22 @@
                         <li class="order-row"
                             data-status="{{ 'success' if order.success else 'failed' }}"
                             data-settled="{{ 'yes' if order.settled else 'no' }}">
+                            
                             <strong>Order ID:</strong> {{ order._id }}<br>
-                            <strong>Customer:</strong> {{ order.customer_name }}<br>
-                            <strong>Product:</strong> {{ order.product }}<br>
-                            <strong>Quantity:</strong> {{ order.quantity }} kg<br>
+                            <strong>Customer:</strong> {{ order.first_name }} {{ order.last_name }}<br>
+                            <strong>Address:</strong> {{ order.address }}, {{ order.city }}, {{ order.state }} {{ order.zipcode }}<br>
+
+                            <strong>Products Purchased:</strong>
+                            <ul>
+                                {% for item in order.cart %}
+                                    <li>{{ item.name }} - ${{ "%.2f"|format(item.price) }} × {{ item.quantity }}</li>
+                                {% endfor %}
+                            </ul>
+
+                            <strong>Total Amount:</strong> ${{ "%.2f"|format(order.totalAmount) }}<br>
                             <strong>Status:</strong> {{ 'Success' if order.success else 'Failed' }}<br>
                             <strong>Settled:</strong> {{ 'Yes' if order.settled else 'No' }}<br>
+
                             {% if order.success and not order.settled %}
                                 <button onclick="settleOrder('{{ order._id.__str__() }}')">Settle Order</button>
                             {% else %}

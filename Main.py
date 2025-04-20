@@ -62,12 +62,23 @@ def process_payment():
         if not data:
             return jsonify({"error": "Invalid request, missing data"}), 400
 
+        # Extract required fields
         first_name = data.get("fname")
         last_name = data.get("lname")
         credit_card = data.get("creditcard")
         exp_date = data.get("expdate")
         cvv = data.get("CVV")
         total_amount = data.get("totalAmount", 0.0)
+
+        # Extract optional customer info
+        address = data.get("address", "")
+        city = data.get("city", "")
+        state = data.get("state", "")
+        zipcode = data.get("zipcode", "")
+        email = data.get("email", "")
+
+        # Extract shopping cart
+        cart = data.get("cart", [])
 
         if not all([first_name, last_name, credit_card, exp_date, cvv]):
             return jsonify({"error": "Missing required fields"}), 400
@@ -82,7 +93,7 @@ def process_payment():
         masked_card = mask_card_number(credit_card)
         card_type = get_card_type(credit_card)
 
-        # Use amount to determine mock API endpoint
+        # Choose mock endpoint
         if total_amount >= 100:
             api_url = API_ENDPOINTS["insufficient"]
         elif total_amount > 0:
@@ -100,19 +111,29 @@ def process_payment():
         auth_token = api_response.get("AuthorizationToken")
         authorized_amount = api_response.get("AuthorizedAmount", total_amount)
 
+        # Save to DB
         order_data = {
-            "fname": first_name,
-            "lname": last_name,
+            "first_name": first_name,
+            "last_name": last_name,
+            "address": address,
+            "city": city,
+            "state": state,
+            "zipcode": zipcode,
+            "email": email,
+            "cart": cart,
+            "totalAmount": authorized_amount,
             "card_type": card_type,
             "masked_card": masked_card,
             "success": success,
             "reason": reason,
-            "authorized_amount": authorized_amount,
-            "authorization_token": auth_token
+            "authorization_token": auth_token,
+            "settled": False
         }
+
         inserted_order = mongo.db.orders.insert_one(order_data)
         order_id = inserted_order.inserted_id
 
+        # Save to auth_collection
         if success:
             mongo.db.auth_collection.insert_one({
                 "order_id": str(order_id),
@@ -162,6 +183,18 @@ def settle_order(order_id):
             return jsonify({"error": "Order already settled or not authorized"}), 400
     except Exception as e:
         return jsonify({"error": f"Failed to settle order: {str(e)}"}), 500
+    
+@app.route('/warehouse')
+def warehouse():
+    orders = list(mongo.db.orders.find())
+
+    for order in orders:
+        order.setdefault("totalAmount", 0.0)  # Add default if missing
+        order.setdefault("cart", [])
+        order.setdefault("first_name", "Unknown")
+        order.setdefault("last_name", "")
+    
+    return render_template('warehouse.html', orders=orders)
 
 @app.route('/')
 def index():
@@ -174,11 +207,6 @@ def checkout():
 @app.route('/sale')
 def sale():
     return render_template('sale.html')
-
-@app.route('/warehouse')
-def warehouse():
-    orders = list(mongo.db.orders.find()) 
-    return render_template('warehouse.html', orders=orders)
 
 @app.route('/about')
 def about_us():
