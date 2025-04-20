@@ -3,14 +3,13 @@ document.addEventListener("DOMContentLoaded", function () {
     populateCartPreview();
 });
 
-// Global function
 function addToCart(productName, productPrice) {
     if (!productName || !productPrice) {
         console.error("Missing product name or price!");
         return;
     }
 
-    let cart = JSON.parse(sessionStorage.getItem("cart")) || [];
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
     const existingIndex = cart.findIndex(item => item.name === productName);
 
@@ -24,10 +23,10 @@ function addToCart(productName, productPrice) {
         });
     }
 
-    sessionStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem("cart", JSON.stringify(cart));
 
     const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
-    sessionStorage.setItem("cartCount", totalCount.toString());
+    localStorage.setItem("cartCount", totalCount.toString());
 
     updateCartCount();
     populateCartPreview();
@@ -35,7 +34,7 @@ function addToCart(productName, productPrice) {
 
 function updateCartCount() {
     const countElement = document.getElementById("cart-count");
-    const count = parseInt(sessionStorage.getItem("cartCount")) || 0;
+    const count = parseInt(localStorage.getItem("cartCount")) || 0;
     countElement.textContent = count;
 
     const icon = document.querySelector(".cart-icon");
@@ -52,7 +51,7 @@ function populateCartPreview() {
     if (!cartItemsContainer) return;
 
     cartItemsContainer.innerHTML = "";
-    const cart = JSON.parse(sessionStorage.getItem("cart")) || [];
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
     if (cart.length === 0) {
         cartItemsContainer.innerHTML = "<li>Your cart is empty.</li>";
@@ -65,11 +64,9 @@ function populateCartPreview() {
         const li = document.createElement("li");
         li.textContent = `${item.name} - $${item.price.toFixed(2)} x ${item.quantity}`;
         cartItemsContainer.appendChild(li);
-
         subtotal += item.price * item.quantity;
     });
 
-    // Subtotal display
     const subtotalItem = document.createElement("li");
     subtotalItem.style.fontWeight = "bold";
     subtotalItem.style.marginTop = "10px";

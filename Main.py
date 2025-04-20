@@ -67,9 +67,13 @@ def process_payment():
         credit_card = data.get("creditcard")
         exp_date = data.get("expdate")
         cvv = data.get("CVV")
+        total_amount = data.get("totalAmount", 0.0)
 
         if not all([first_name, last_name, credit_card, exp_date, cvv]):
             return jsonify({"error": "Missing required fields"}), 400
+
+        if not isinstance(total_amount, (int, float)) or total_amount <= 0:
+            return jsonify({"error": "Invalid or missing total amount"}), 400
 
         valid_exp, exp_message = is_valid_expiration_date(exp_date)
         if not valid_exp:
@@ -78,10 +82,11 @@ def process_payment():
         masked_card = mask_card_number(credit_card)
         card_type = get_card_type(credit_card)
 
-        if credit_card.startswith("4"):
-            api_url = API_ENDPOINTS["success"]
-        elif credit_card.startswith("5"):
+        # Use amount to determine mock API endpoint
+        if total_amount >= 100:
             api_url = API_ENDPOINTS["insufficient"]
+        elif total_amount > 0:
+            api_url = API_ENDPOINTS["success"]
         else:
             api_url = API_ENDPOINTS["carddetails"]
 
@@ -93,7 +98,7 @@ def process_payment():
         success = api_response.get("Success", False)
         reason = api_response.get("Reason", "Unknown error")
         auth_token = api_response.get("AuthorizationToken")
-        authorized_amount = api_response.get("AuthorizedAmount", 0.0)
+        authorized_amount = api_response.get("AuthorizedAmount", total_amount)
 
         order_data = {
             "fname": first_name,

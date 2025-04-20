@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     updateCartCount();
+    updateCartTotalDisplay(); // Show total at page load
 
     const checkoutForm = document.getElementById("checkout-form");
     const creditCardInput = document.getElementById("creditcard");
@@ -15,12 +16,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     creditCardInput?.addEventListener("input", function (e) {
-        const rawDigits = e.target.value.replace(/\D/g, ""); // remove all non-digit characters
+        const rawDigits = e.target.value.replace(/\D/g, "");
         let formatted = rawDigits;
-
         const cardType = getCardType(rawDigits);
 
-        // Format card number based on type
+        // Format
         if (cardType === "American Express") {
             formatted = rawDigits.replace(/^(\d{4})(\d{0,6})(\d{0,5}).*/, (_, g1, g2, g3) =>
                 [g1, g2, g3].filter(Boolean).join(" ")
@@ -32,12 +32,9 @@ document.addEventListener("DOMContentLoaded", function () {
         e.target.value = formatted;
         creditCardInput.setSelectionRange(formatted.length, formatted.length);
 
-        // Only show card type after 6+ digits entered
-        if (rawDigits.length >= 6) {
-            cardTypeDisplay.textContent = cardType ? `Card Type: ${cardType}` : "Unknown Card Type";
-        } else {
-            cardTypeDisplay.textContent = "";
-        }
+        cardTypeDisplay.textContent = rawDigits.length >= 6
+            ? (cardType ? `Card Type: ${cardType}` : "Unknown Card Type")
+            : "";
     });
 
     checkoutForm?.addEventListener("submit", async function (event) {
@@ -64,6 +61,14 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        // Calculate total amount from cart
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const totalAmount = cart.reduce((sum, item) => {
+            return sum + parseFloat(item.price) * item.quantity;
+        }, 0);
+
+        formData.totalAmount = totalAmount;
+
         try {
             const response = await fetch("/process_payment", {
                 method: "POST",
@@ -72,16 +77,17 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             const data = await response.json();
+
             if (response.ok && data.status === "success") {
                 alert(`✅ Transaction Approved!\nCard Type: ${data.card_type}\nMasked: ${data.masked_card}\nAmount: $${data.amount}`);
                 checkoutForm.reset();
                 cardTypeDisplay.textContent = "";
 
-                // Clear cart after successful payment
                 localStorage.removeItem("cart");
                 localStorage.setItem("cartCount", "0");
                 updateCartCount();
                 populateCartPreview();
+                updateCartTotalDisplay();
             } else {
                 alert(`❌ Transaction Failed\nReason: ${data.message}`);
             }
@@ -126,7 +132,21 @@ function populateCartPreview() {
 
     cart.forEach(item => {
         const li = document.createElement("li");
-        li.textContent = `${item.name} - $${item.price} x ${item.quantity}`;
+        li.textContent = `${item.name} - $${parseFloat(item.price).toFixed(2)} x ${item.quantity}`;
         cartItemsContainer.appendChild(li);
     });
+
+    updateCartTotalDisplay(); // Update display when items change
+}
+
+function updateCartTotalDisplay() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const total = cart.reduce((sum, item) => {
+        return sum + parseFloat(item.price) * item.quantity;
+    }, 0);
+
+    const totalDisplay = document.getElementById("cart-total");
+    if (totalDisplay) {
+        totalDisplay.textContent = `Total: $${total.toFixed(2)}`;
+    }
 }
