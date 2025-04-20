@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (/^4/.test(number)) return "Visa";
         if (/^5[1-5]/.test(number)) return "MasterCard";
         if (/^3[47]/.test(number)) return "American Express";
-        if (/^6(?:011|5)/.test(number)) return "Discover";
         return "";
     }
 
