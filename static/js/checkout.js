@@ -127,16 +127,41 @@ function populateCartPreview() {
 
     if (cart.length === 0) {
         cartItemsContainer.innerHTML = "<li>Your cart is empty.</li>";
+        updateCartTotalDisplay();
         return;
     }
 
-    cart.forEach(item => {
+    cart.forEach((item, index) => {
         const li = document.createElement("li");
-        li.textContent = `${item.name} - $${parseFloat(item.price).toFixed(2)} x ${item.quantity}`;
+        li.innerHTML = `
+            ${item.name} - $${parseFloat(item.price).toFixed(2)} x ${item.quantity}
+            <button onclick="removeFromCart(${index})" style="margin-left:10px; background:red; color:white; border:none; padding:2px 6px; cursor:pointer;">Remove</button>
+        `;
         cartItemsContainer.appendChild(li);
     });
 
-    updateCartTotalDisplay(); // Update display when items change
+    updateCartTotalDisplay();
+}
+
+function removeFromCart(index) {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    if (index >= 0 && index < cart.length) {
+        // Reduce cart count
+        let cartCount = parseInt(localStorage.getItem("cartCount")) || 0;
+        cartCount -= cart[index].quantity;
+        if (cartCount < 0) cartCount = 0;
+
+        // Remove item and update storage
+        cart.splice(index, 1);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        localStorage.setItem("cartCount", cartCount.toString());
+
+        // Refresh UI
+        updateCartCount();
+        populateCartPreview();
+        updateCartTotalDisplay();
+    }
 }
 
 function updateCartTotalDisplay() {

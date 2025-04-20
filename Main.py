@@ -34,7 +34,7 @@ def get_card_type(card_number):
         return "MasterCard"
     elif re.match(r"^3[47]", card_number):
         return "American Express"
-    return "Unknown"
+    return "AMEX"
 
 def is_valid_expiration_date(exp_date_str):
     try:
