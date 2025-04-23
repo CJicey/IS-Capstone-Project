@@ -1,4 +1,3 @@
-// Wait for the DOM to fully load before executing any code
 document.addEventListener("DOMContentLoaded", function () {
     // Initial UI updates
     updateCartCount();             // Update cart item count in header

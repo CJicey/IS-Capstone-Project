@@ -1,4 +1,3 @@
-# Import necessary libraries and modules
 from flask import Flask, request, jsonify, render_template  # Flask core modules
 from bson.objectid import ObjectId                          # For handling MongoDB ObjectId
 from flask_pymongo import PyMongo                           # MongoDB integration with Flask
