@@ -107,6 +107,21 @@ def process_payment():
         masked_card = mask_card_number(credit_card)
         card_type = get_card_type(credit_card)
 
+        # Handle unknown card type
+        if card_type == "Unknown":
+        # Simulate calling card detail error API
+            response = requests.get(API_ENDPOINTS["carddetails"])
+            if response.status_code != 200:
+                return jsonify({"error": "Card verification failed"}), 500
+
+        api_response = response.json()
+        return jsonify({
+            "status": "failed",
+            "message": api_response.get("Reason", "Invalid card details"),
+            "card_type": card_type,
+            "masked_card": masked_card
+        }), 400
+    
         # Determine appropriate API endpoint based on total amount
         if total_amount >= 100:
             api_url = API_ENDPOINTS["insufficient"]
