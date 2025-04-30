@@ -25,14 +25,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Format card number based on type
         if (cardType === "American Express") {
-            // AmEx: 4-6-5 digit format
+        // AmEx: 4-6-5 digit format
             formatted = rawDigits.replace(/^(\d{4})(\d{0,6})(\d{0,5}).*/, (_, g1, g2, g3) =>
                 [g1, g2, g3].filter(Boolean).join(" ")
-            ).slice(0, 17);
-        } else {
+                ).slice(0, 17);
+            } else {
             // Other cards: group in 4s
             formatted = rawDigits.replace(/(.{4})/g, "$1 ").trim().slice(0, 19);
-        }
+            }
 
         e.target.value = formatted;
         creditCardInput.setSelectionRange(formatted.length, formatted.length); // Maintain cursor at end
